@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <link rel="stylesheet" href="#{resource['css/login-page.css']}"></link>
+        <link rel="icon" type="image/x-icon" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" sizes="180x180" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" sizes="180x180" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" sizes="152x152" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" sizes="120x120" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" sizes="76x76" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="apple-touch-icon" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <title>sdChat - Inicio de sesión</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    </h:head>
+
+    <h:body>
+        <div class="container">
+            <p:card class="card-logo-container">
+                <img src="#{resource['img/sdChat-banner.png']}" />
+            </p:card>
+            <p:card class="card-logo-container">
+                <f:facet name="title">
+                    Inicio de sesión
+                </f:facet>
+                <h:form>
+                    <div class="div-login-container">
+                        <p>Escribe tu nombre de usuario y contraseña para acceder a tus conversaciones</p>
+                        <div class="div-form-container">
+                            <p:outputLabel value="Nombre de usuario" for="usernameInput" class="username-label" />
+                            <p:inputText id="usernameInput" class="input-text" placeholder="Nombre de usuario" value="#{loginBackingBean.nombreUsuario}" required="true"/>
+                            <p:outputLabel value="Contraseña" for="passwordInput" class="username-label" />
+                            <p:inputText type="password"  id="passwordInput" class="input-text" placeholder="Contraseña" value="#{loginBackingBean.password}" required="true"/>
+                            <p:commandButton  id="loginBtn" icon="pi pi-sign-in" action="#{loginClientBean.login()}" update="growlLogin" style="width:95%;">
+                            </p:commandButton>
+                            <p:tooltip for="loginBtn" value="Entrar" />
+                            <p:linkButton id="signUpBtn" value="Crear cuenta" outcome="/signup/signup.xhtml" style="align-self: center" styleClass="ui-button-flat" />
+                        </div>
+                    </div> 
+                    <p:growl id="growlLogin" showDetail="true"></p:growl>
+                </h:form>
+            </p:card>
+        </div>
+    </h:body>
+
+</html>

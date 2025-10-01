@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+        <f:metadata>
+            <f:viewParam name="idConversacion" value="#{chatBackingBean.idConversacionSelected}" />
+            <f:viewParam name="user" value="#{chatBackingBean.idUserLogeado}" />
+        </f:metadata>
+        <script src="#{resource['js/jquery-1.10.2.min.js']}"></script>
+
+        <ui:composition template="./../WEB-INF/chat-template.xhtml">
+
+            <ui:define name="left" id="chat-list">
+                <h:outputScript library="js" name="websocket.js" target="body"/>
+                <div class="chat-list-container" >
+                    <div class="chat-list-title">
+                        <p:outputLabel value="Hola, #{chatClientBean.getUsuarioById().nombreUsuario}" class="output-label-user"></p:outputLabel>
+                        <h:form>
+                            <div class="buttons-container">
+                                <p:linkButton id="userBtn" icon="pi pi-user" styleClass="rounded-button ui-button-outlined ui-button-success" outcome="/user/user.xhtml">
+                                    <f:param name="user" value="#{chatBackingBean.idUserLogeado}"/>
+                                </p:linkButton>
+                                <p:tooltip for="userBtn" value="Mi perfil" position="bottom"/>
+                                <p:commandButton id="exitBtn" icon="pi pi-sign-out" styleClass="rounded-button ui-button-secondary ui-button-outlined" action="#{loginClientBean.logout()}"/>
+                                <p:tooltip for="exitBtn" value="Salir" position="bottom"/>
+                                <p:commandButton id="newBtn" icon="pi pi-plus" styleClass="rounded-button ui-button-primary" onclick="PF('nuevaConversacionModal').show()"/>
+                                <p:tooltip for="newBtn" value="Nueva conversación" />
+
+                            </div>
+                        </h:form>
+                    </div>
+                    <p:divider align="left">
+                        <div class="inline-flex align-items-center">
+                            <i class="pi pi-list" id="divider-icon"/>
+                            <b>Conversaciones</b>
+                        </div>
+                    </p:divider>
+
+                    <p:dataScroller  value="#{chatClientBean.getChatsByUser()}" var="chat" chunkSize="5" id="data" lazy="false" class="ui-datascroller-content-ov" rendered="#{chatClientBean.getChatsByUser().size() > 0}">
+                        <div class="chat-list-item" >
+                            <div class="receptor-info">
+                                <p:avatar label="#{chatClientBean.getFirstLetterReceptor(chat.idConversacion)}" styleClass="mr-2" size="xlarge" shape="circle" />
+                                <div class="receptor-name">
+                                    <p>#{chatClientBean.getNombreReceptor(chat.idConversacion)}</p>
+                                </div>
+                            </div>
+                            <div class="receptor-info">
+                                <p>#{chatClientBean.getDisplayTime(chat.timestamp)}</p>
+                                <h:form>
+                                    <p:linkButton styleClass="rounded-button ui-button-flat" icon="pi pi-chevron-right" outcome="/chat/chat.xhtml">
+                                        <f:param name="idConversacion" value="#{chat.idConversacion}"/>
+                                        <f:param name="user" value="#{chatBackingBean.idUserLogeado}"/>
+                                    </p:linkButton>
+                                    <p:tooltip for="@previous" value="Abrir conversación"></p:tooltip> 
+                                </h:form>
+                            </div>
+                        </div>
+                    </p:dataScroller>
+                    <c:if test="${chatClientBean.getChatsByUser().size() == 0 || chatClientBean.getChatsByUser() == null}">
+                        <p style="align-self: center;margin-top:10px; margin-left: 10px;">No tienes conversaciones</p>
+                    </c:if>
+                </div>
+
+                <!-- modal para empezar nueva conversación -->
+                <script>
+                    function handleSubmitAdd() {
+                        PF('nuevaConversacionModal').hide();
+                    }
+                    function ovBodyAuto() {
+                        $('html, body').css('overflow', 'auto');
+                    }
+                    function ovBodyHidden() {
+                        $('html, body').css('overflow', 'hidden');
+                    }</script>
+                <p:dialog draggable="false" resizable="false" modal="true" header="Nueva conversación" widgetVar="nuevaConversacionModal"  width="350" showEffect="fade"  closeOnEscape="false">
+                    <h:form>
+                        <div class="div-modal-form-container">
+                            <p>Escribe el nombre de usuario con el que quieres hablar</p>
+                            <div class="div-modal-form">
+                                <p:outputLabel value="Nombre de usuario" for="usernameInputChat" id="output-label-username" style="display: none" />
+                                <p:inputText id="usernameInputChat" style="width:95%" placeholder="Nombre de usuario" value="#{chatBackingBean.newChatUsername}" required="true"/>
+
+                                <p:commandButton icon="pi pi-check" id="startConversacionBtn" actionListener="#{chatClientBean.startConversacion()}" oncomplete="handleSubmitAdd(xhr, status, args)">
+                                </p:commandButton>
+                                <p:tooltip for="startConversacionBtn" value="Iniciar conversación" />
+                            </div>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <!-- si se descomenta, hay que añadir update="growlNewChat" al commandButton anterior
+                <p:growl id="growlNewChat" showDetail="true"></p:growl>
+                -->
+            </ui:define>
+
+            <ui:define name="content" id="chat-content" >    
+                <c:if test="${chatBackingBean.idConversacionSelected != null }">
+                    <div class="chat-container" id="chatContainer">
+                        <div class="chat-header">
+
+                            <div class="chat-header-receptor-info" >
+                                <h:form>
+                                    <p:linkButton styleClass="rounded-button ui-button-flat" icon="pi pi-chevron-left" outcome="/chat/chat.xhtml">
+                                        <f:param name="idConversacion" value="0-0"/>
+                                        <f:param name="user" value="#{chatBackingBean.idUserLogeado}"/>
+                                    </p:linkButton>
+                                    <p:tooltip for="@previous" value="Volver a mis conversaciones"></p:tooltip> 
+                                </h:form>
+                                <p:avatar label="#{!chatBackingBean.idConversacionSelected.equalsIgnoreCase('0-0') ? chatClientBean.getFirstLetterReceptor(chatBackingBean.idConversacionSelected) : 'Selecciona un chat'}" styleClass="mr-2" size="xlarge" shape="circle" />
+                                <div class="receptor-name">
+                                    <p style="font-size: 20pt;">#{chatBackingBean.idConversacionSelected != null ? chatClientBean.getNombreReceptor(chatBackingBean.idConversacionSelected) : 'Selecciona un chat'}</p>
+                                </div>             
+                            </div>
+
+                        </div>
+                        <div class="chat-content">
+
+                            <p:dataTable style="margin-top:-35px;" styleClass="borderless" showGridlines="false" var="chat" value="#{chatClientBean.getLatestMessageByUser(chatBackingBean.idConversacionSelected)}" id="chatMessages">
+                                <p:column rendered="#{chat.idEmisor == chatBackingBean.idUserLogeado}">
+                                    <div class="message-container-emisor">
+                                        <h:outputText value="#{chat.mensaje}" style="font-weight: 600; margin-left: 10px;"/>
+                                        <i class="pi pi-check-circle" style="align-self: center; margin-left:20px;"></i>
+                                    </div>
+                                </p:column>
+                                <p:column rendered="#{chat.idReceptor == chatBackingBean.idUserLogeado}">
+                                    <div class="message-container-receptor">
+                                        <i class="pi pi-arrow-circle-right
+                                           " style="align-self: center; margin-right:20px;"></i>
+                                        <h:outputText value="#{chat.mensaje}" style="font-weight: 600; margin-right:20px;"/>
+
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="message-input">
+
+                            <div style="display:flex; flex-direction:column; justify-content: space-between; height:100%;">
+                                <div style="display:flex; flex-direction:row; gap:10px; height: 40px; margin-top:20px;" >
+
+                                    <h:form><p:commandButton id="mediaBtn" icon="pi pi-paperclip" style="margin-left:10px;" disabled="true">
+                                        </p:commandButton>
+                                        <p:tooltip for="mediaBtn" value="Seleccionar archivo" />
+                                    </h:form>
+
+                                    <p:outputLabel value="Mensaje" for="campoTexto" style="display: none" />
+                                    <p:inputText id="campoTexto" style="width:95%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
+                                    <h:form>
+                                        <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages">
+                                        </p:commandButton>
+                                        <p:tooltip for="sendBtn" value="Enviar mensaje" />
+                                    </h:form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${chatBackingBean.idConversacionSelected eq null}">
+                    <div class="chat-container">
+                        <div style="display: flex; flex-direction: column; align-content: center; justify-content: center">
+                            <p style="align-self: center;margin-top:30%;">Selecciona una conversación con el icono <span><i class="pi pi-chevron-right" style="font-size: 0.8rem; color:#2196F3"/></span></p>
+                            <p style="align-self: center; ">Inicia una nueva con el icono <span><i class="pi pi-plus" style="font-size: 0.8rem; color:#2196F3"/></span></p>
+                        </div>
+                    </div>
+                </c:if>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
