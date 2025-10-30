@@ -19,7 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
@@ -43,10 +45,10 @@ import javax.ws.rs.core.Response;
 public class ChatServer {
 
     private static final Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
-    
-    private static final Set<String> mensajesPersistidos =
-        java.util.concurrent.ConcurrentHashMap.newKeySet();
-    
+
+    private static final Set<String> mensajesPersistidos
+            = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
     @Inject
     LoginBackingBean loginBean;
 
@@ -59,7 +61,7 @@ public class ChatServer {
     @PostConstruct
     public void init() {
         client = ClientBuilder.newClient();
-        
+
     }
 
     /**
@@ -79,7 +81,7 @@ public class ChatServer {
     public void onOpen(Session peer, @PathParam("room") String room) {
         //System.out.println(room);
         peers.add(peer);
-   }
+    }
 
     /**
      *
@@ -114,9 +116,9 @@ public class ChatServer {
             String mensaje = message.split("_")[1];
             System.out.println("Guardo un mensaje");
             this.saveMessage(idEmisor, idReceptor, idConversacion, mensaje);
-            
+
             // después, lo enviamos
-             try {
+            try {
                 peer.getBasicRemote().sendText(message);
             } catch (IOException ex) {
                 System.out.println("Excepcion");
@@ -129,31 +131,39 @@ public class ChatServer {
         // primero determinamos quién es el emisor y quién el receptor
         // si el usuario logueado es un refugio, su id es el número después de los dos puntos
         // fecha y hora actuales
-        if(mensajesPersistidos.add(key)){
-        LocalDateTime hoy = LocalDateTime.now(ZoneId.of("Europe/Madrid"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String timestamp = hoy.format(formatter);
+        if (mensajesPersistidos.add(key)) {
+            LocalDateTime hoy = LocalDateTime.now(ZoneId.of("Europe/Madrid"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String timestamp = hoy.format(formatter);
 
-        // construimos el objeto chat para guardarlo en la BD
-        Chat c = new Chat();
-        c.setIdConversacion(idConversacion);
-        c.setIdEmisor(idEmisor);
-        c.setIdReceptor(idReceptor);
-        c.setMensaje(message);
-        c.setTimestamp(timestamp);
+            // construimos el objeto chat para guardarlo en la BD
+            Chat c = new Chat();
+            c.setIdConversacion(idConversacion);
+            c.setIdEmisor(idEmisor);
+            c.setIdReceptor(idReceptor);
+            c.setMensaje(message);
+            c.setTimestamp(timestamp);
 
-        // lo guardamos en la BD
-        // se guarda una vez por cada cliente distinto usando la sala (max 2)
-        // si el numero de peers es 2, debemos guardar y borrar el último mensaje con el id de la conversación 
-        // (será el mensaje repetido)
-        target = client.target("http://localhost:8080/sdChatv2/webresources/com.aalvarotex.sd.sdchatv2.entities.chat");
-        
+            // lo guardamos en la BD
+            // se guarda una vez por cada cliente distinto usando la sala (max 2)
+            // si el numero de peers es 2, debemos guardar y borrar el último mensaje con el id de la conversación 
+            // (será el mensaje repetido)
+            target = client
+                    .target(base()).path("com.aalvarotex.sd.sdchatv2.entities.chat");
+
             // guardamos sin borrar
             Response response = target.register(ChatWriter.class)
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(c, MediaType.APPLICATION_JSON));
             System.out.println("Añadir mensaje: " + response);
-        } else{}
+        } else {
+        }
     }
 
+    private String base() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ctx = req.getContextPath();        // p.ej. "/sdChatv2" o "/sdchat"
+        int port = req.getLocalPort();          // normalmente 8080 en la Pi
+        return "http://localhost:" + port + ctx + "/webresources";
+    }
 }

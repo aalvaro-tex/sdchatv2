@@ -84,9 +84,9 @@
         wsocket.addEventListener('close', evt => console.log('[WS] CLOSE', evt));
         wsocket.addEventListener('message', evt => {
             const campoTexto = document.getElementById('campoTexto');
-            if (campoTexto)
-                campoTexto.value = '';
+            if (campoTexto) campoTexto.value = '';
             console.log('[WS] MSG', evt.data);
+            rcActualizarTabla();
         });
         wsocket.addEventListener('error', evt => {
             console.error('[WS] ERROR', evt);

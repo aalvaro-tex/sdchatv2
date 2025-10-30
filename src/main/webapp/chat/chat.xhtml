@@ -99,7 +99,7 @@
             </ui:define>
 
             <ui:define name="content" id="chat-content" >    
-                <c:if test="${chatBackingBean.idConversacionSelected != null }">
+                <c:if test="${chatBackingBean.idConversacionSelected != null and not chatBackingBean.idConversacionSelected.equalsIgnoreCase('0-0')}">
                     <div class="chat-container" id="chatContainer">
                         <div class="chat-header">
 
@@ -120,7 +120,7 @@
                         </div>
                         <div class="chat-content">
 
-                            <p:dataTable style="margin-top:-35px;" styleClass="borderless" showGridlines="false" var="chat" value="#{chatClientBean.getLatestMessageByUser(chatBackingBean.idConversacionSelected)}" id="chatMessages">
+                            <p:dataTable style="margin-top:-35px;" styleClass="borderless" showGridlines="false" var="chat" value="#{chatClientBean.getLatestMessageByUser(chatBackingBean.idConversacionSelected)}" id="chatMessages" emptyMessage="No seas tímido y escribe un mensaje a #{chatBackingBean.idConversacionSelected != null ? chatClientBean.getNombreReceptor(chatBackingBean.idConversacionSelected) : 'tu contacto'}">
                                 <p:column rendered="#{chat.idEmisor == chatBackingBean.idUserLogeado}">
                                     <div class="message-container-emisor">
                                         <h:outputText value="#{chat.mensaje}" style="font-weight: 600; margin-left: 10px;"/>
@@ -136,6 +136,7 @@
                                     </div>
                                 </p:column>
                             </p:dataTable>
+                              <p:remoteCommand name="rcActualizarTabla" update="chatMessages" />
                         </div>
                         <div class="message-input">
 
@@ -151,6 +152,7 @@
                                     <p:inputText id="campoTexto" style="width:95%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
                                     <h:form>
                                         <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages">
+                                           
                                         </p:commandButton>
                                         <p:tooltip for="sendBtn" value="Enviar mensaje" />
                                     </h:form>
@@ -160,7 +162,7 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${chatBackingBean.idConversacionSelected eq null}">
+                <c:if test="${chatBackingBean.idConversacionSelected eq null || chatBackingBean.idConversacionSelected == '0-0'}">
                     <div class="chat-container">
                         <div style="display: flex; flex-direction: column; align-content: center; justify-content: center">
                             <p style="align-self: center;margin-top:30%;">Selecciona una conversación con el icono <span><i class="pi pi-chevron-right" style="font-size: 0.8rem; color:#2196F3"/></span></p>

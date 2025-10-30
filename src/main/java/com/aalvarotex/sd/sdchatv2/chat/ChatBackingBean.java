@@ -46,7 +46,7 @@ public class ChatBackingBean implements Serializable {
 
     public void setIdConversacionSelected(String idConversacionSelected) {
         this.idConversacionSelected = idConversacionSelected;
-        logger.log(Level.INFO, "Id de la conversaci\u00f3n seleccionada: {0}", this.idConversacionSelected);
+        logger.log(Level.INFO, "Id de la conversación seleccionada: {0}", this.idConversacionSelected);
     }
 
     public Long getIdUserLogeado() {
