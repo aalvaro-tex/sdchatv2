@@ -30,8 +30,10 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.aalvarotex.sd.sdchatv2.json.ChatWriter.class);
+        resources.add(com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter.class);
         resources.add(com.aalvarotex.sd.sdchatv2.json.UsuarioWriter.class);
         resources.add(com.aalvarotex.sd.sdchatv2.rest.ChatFacadeREST.class);
+        resources.add(com.aalvarotex.sd.sdchatv2.rest.UsuarioDetallesFacadeREST.class);
         resources.add(com.aalvarotex.sd.sdchatv2.rest.UsuarioFacadeREST.class);
     }
     

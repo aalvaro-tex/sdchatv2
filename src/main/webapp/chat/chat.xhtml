@@ -23,7 +23,7 @@
                         <p:outputLabel value="Hola, #{chatClientBean.getUsuarioById().nombreUsuario}" class="output-label-user"></p:outputLabel>
                         <h:form>
                             <div class="buttons-container">
-                                <p:linkButton id="userBtn" icon="pi pi-user" styleClass="rounded-button ui-button-outlined ui-button-success" outcome="/user/user.xhtml">
+                                <p:linkButton id="userBtn" icon="pi pi-user" styleClass="rounded-button ui-button-outlined ui-button-success" outcome="/user/user-details.xhtml">
                                     <f:param name="user" value="#{chatBackingBean.idUserLogeado}"/>
                                 </p:linkButton>
                                 <p:tooltip for="userBtn" value="Mi perfil" position="bottom"/>

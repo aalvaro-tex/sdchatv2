@@ -7,7 +7,9 @@ package com.aalvarotex.sd.sdchatv2.login;
 
 import com.aalvarotex.sd.sdchatv2.chat.ChatBackingBean;
 import com.aalvarotex.sd.sdchatv2.entities.Usuario;
+import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import com.aalvarotex.sd.sdchatv2.jaas.UsuarioEJB;
+import com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioReader;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioWriter;
 import java.io.IOException;
@@ -66,6 +68,14 @@ public class LoginClientBean implements Serializable {
                 Usuario found = usuarioEJB.findByNombreUsuario(u.getNombreUsuario());
                 bean.setUsuarioLogeado(found);
                 logger.log(Level.INFO, "Usuario creado: {0}", found.getNombreUsuario());
+                // añadimos a la tabla de detalles de usuario una línea con el id del usuario y el resto vacío
+                target = client
+                .target(base())
+                .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+                UsuarioDetalles ud = new UsuarioDetalles(found.getId());
+                Response r = target.register(UsuarioDetallesWriter.class)
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.entity(ud, MediaType.APPLICATION_JSON));
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" +found.getId());
             } catch (Exception e) {

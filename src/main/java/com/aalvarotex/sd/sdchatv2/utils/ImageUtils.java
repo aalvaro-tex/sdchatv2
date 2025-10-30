@@ -27,7 +27,7 @@ public class ImageUtils implements Serializable{
     /**
      *
      * @param file
-     * @return
+     * @return base64 de la imagen
      */
     public String upload(UploadedFile file) {
         String base64Image = "";

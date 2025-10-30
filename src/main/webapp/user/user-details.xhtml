@@ -72,15 +72,22 @@ and open the template in the editor.
     </h:head>
 
     <h:body>
+        <f:metadata>
+            <f:viewParam name="user" value="#{userBackingBean.idUsuarioLogeado}" />
+        </f:metadata>
         <div class="chat-list-container" >
             <div class="chat-list-title">
                 <h:form>
                     <div class="buttons-container">
                         <p:linkButton id="backButton" styleClass="rounded-button ui-button-flat" icon="pi pi-chevron-left" outcome="/chat/chat.xhtml"></p:linkButton>
 
-                        <p:tooltip for="backButton" value="Mi perfil" position="bottom"/>
-
-                    </div>
+                        <p:tooltip for="backButton" value="Volver a mis chats" position="right"/>
+                        </div>
+                </h:form>
+                <h:form>
+                    <p:commandButton id="saveBtn" icon="pi pi-save" styleClass="rounded-button ui-button-primary" action="#{userClientBean.saveChanges()}"/>
+                        <p:tooltip for="saveBtn" value="Guardar cambios" position="bottom"/>
+                   
                 </h:form>
 
 
@@ -116,12 +123,13 @@ and open the template in the editor.
                     <!-- Botón circular pequeño (abre el diálogo de subir imagen) -->
                     <p:commandButton type="button" icon="pi pi-pencil"
                                      onclick="PF('uploadDlg').show()"
-                                     styleClass="rounded-button ui-button-info edit-fab" />
+                                     styleClass="rounded-button ui-button-info edit-fab" id="editPicBtn"/>
+                    <p:tooltip for="editPicBtn" value="Cambiar imagen de perfil" position="right"/>
                 </div>
                 <div class="info-container">
-                    
+
                 </div>
-                
+
 
                 <!-- Diálogo con fileUpload -->
                 <p:dialog widgetVar="uploadDlg" header="Cambiar imagen de perfil" modal="true"

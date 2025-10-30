@@ -29,6 +29,8 @@ public class UserBackingBean implements Serializable {
     private String colorPreferente;
     private String fotoPerfilSrc;
     
+    private Long idUsuarioLogeado;
+    
     @Inject
     private ImageUtils imageUtils;
 
@@ -64,5 +66,15 @@ public class UserBackingBean implements Serializable {
     public void setFotoPerfilSrc(String fotoPerfilSrc) {
         this.fotoPerfilSrc = fotoPerfilSrc;
     }
+
+    public Long getIdUsuarioLogeado() {
+        return idUsuarioLogeado;
+    }
+
+    public void setIdUsuarioLogeado(Long idUsuarioLogeado) {
+        this.idUsuarioLogeado = idUsuarioLogeado;
+    }
+    
+    
     
 }
