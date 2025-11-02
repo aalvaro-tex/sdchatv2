@@ -176,15 +176,16 @@ body .ui-datatable .ui-datatable-data > tr > td {
     margin-bottom: 10px;
 }
 
+.ui-state-disabled{
+    cursor:not-allowed !important;
+    pointer-events: all;
+}
+
 .chat-header-receptor-info{
     display:flex;
         flex-direction:row;
         align-items: center;
         gap: 10px;
-}
-
-#mediaBtn:disabled:hover{
-    cursor: no-drop;
 }
 
 @media (max-width: 768px) {
