@@ -5,15 +5,14 @@
  */
 package com.aalvarotex.sd.sdchatv2.user;
 
+import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import com.aalvarotex.sd.sdchatv2.utils.ImageUtils;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.component.colorpicker.ColorPicker;
 import org.primefaces.model.file.UploadedFile;
 
 /**
@@ -31,12 +30,24 @@ public class UserBackingBean implements Serializable {
     
     private Long idUsuarioLogeado;
     
+    private UsuarioDetalles ud;
+    
     @Inject
     private ImageUtils imageUtils;
+    @Inject 
+    private UserClientBean userClientBean;
+    
+    public void onPreRenderView() {
+        
+            userClientBean.getUserDetails();
+        
+    }
 
     public UploadedFile getFotoPerfil() {
         return fotoPerfil;
     }
+    
+    
 
     public void setFotoPerfil(UploadedFile fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
@@ -73,6 +84,14 @@ public class UserBackingBean implements Serializable {
 
     public void setIdUsuarioLogeado(Long idUsuarioLogeado) {
         this.idUsuarioLogeado = idUsuarioLogeado;
+    }
+
+    public UsuarioDetalles getUd() {
+        return ud;
+    }
+
+    public void setUd(UsuarioDetalles ud) {
+        this.ud = ud;
     }
     
     

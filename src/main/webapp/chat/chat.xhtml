@@ -45,7 +45,9 @@
                     <p:dataScroller  value="#{chatClientBean.getChatsByUser()}" var="chat" chunkSize="5" id="data" lazy="false" class="ui-datascroller-content-ov" rendered="#{chatClientBean.getChatsByUser().size() > 0}">
                         <div class="chat-list-item" >
                             <div class="receptor-info">
-                                <p:avatar label="#{chatClientBean.getFirstLetterReceptor(chat.idConversacion)}" styleClass="mr-2" size="xlarge" shape="circle" />
+                                <p:avatar styleClass="mr-2" size="xlarge" shape="circle" >
+                                    <img src="data:image/png;base64,#{chatClientBean.getUserImgById(chat.idConversacion)}"/> 
+                                </p:avatar>
                                 <div class="receptor-name">
                                     <p>#{chatClientBean.getNombreReceptor(chat.idConversacion)}</p>
                                 </div>
@@ -111,7 +113,9 @@
                                     </p:linkButton>
                                     <p:tooltip for="@previous" value="Volver a mis conversaciones"></p:tooltip> 
                                 </h:form>
-                                <p:avatar label="#{!chatBackingBean.idConversacionSelected.equalsIgnoreCase('0-0') ? chatClientBean.getFirstLetterReceptor(chatBackingBean.idConversacionSelected) : 'Selecciona un chat'}" styleClass="mr-2" size="xlarge" shape="circle" />
+                                <p:avatar styleClass="mr-2" size="xlarge" shape="circle" >
+                                    <img src="data:image/png;base64,#{chatClientBean.getUserImgById(chatBackingBean.idConversacionSelected)}"/> 
+                                </p:avatar>
                                 <div class="receptor-name">
                                     <p style="font-size: 20pt;">#{chatBackingBean.idConversacionSelected != null ? chatClientBean.getNombreReceptor(chatBackingBean.idConversacionSelected) : 'Selecciona un chat'}</p>
                                 </div>             

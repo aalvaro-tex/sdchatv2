@@ -74,6 +74,7 @@ and open the template in the editor.
     <h:body>
         <f:metadata>
             <f:viewParam name="user" value="#{userBackingBean.idUsuarioLogeado}" />
+             <f:event type="preRenderView" listener="#{userBackingBean.onPreRenderView}"/>
         </f:metadata>
         <div class="chat-list-container" >
             <div class="chat-list-title">
@@ -86,7 +87,7 @@ and open the template in the editor.
                 </h:form>
                 <h:form>
                     <p:commandButton id="saveBtn" icon="pi pi-save" styleClass="rounded-button ui-button-primary" action="#{userClientBean.saveChanges()}"/>
-                        <p:tooltip for="saveBtn" value="Guardar cambios" position="bottom"/>
+                        <p:tooltip for="saveBtn" value="Guardar cambios" position="left"/>
                    
                 </h:form>
 

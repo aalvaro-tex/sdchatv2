@@ -5,17 +5,22 @@
  */
 package com.aalvarotex.sd.sdchatv2.chat;
 
+import com.aalvarotex.sd.sdchatv2.dto.UsuarioDTO;
 import com.aalvarotex.sd.sdchatv2.entities.Chat;
 import com.aalvarotex.sd.sdchatv2.entities.Usuario;
+import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import com.aalvarotex.sd.sdchatv2.json.ChatReader;
 import com.aalvarotex.sd.sdchatv2.json.ChatWriter;
+import com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioReader;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioWriter;
 import com.aalvarotex.sd.sdchatv2.login.LoginBackingBean;
+import com.aalvarotex.sd.sdchatv2.utils.Constantes;
 import com.aalvarotex.sd.sdchatv2.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -36,13 +41,15 @@ import javax.ws.rs.core.Response;
 @Named
 @RequestScoped
 public class ChatClientBean {
- private static final Logger logger = Logger.getLogger(ChatClientBean.class.getName());
+    
+    
+    private static final Logger logger = Logger.getLogger(ChatClientBean.class.getName());
     Client client;
     WebTarget target;
 
     @Inject
     ChatBackingBean bean;
-    
+
     @Inject
     StringUtils stringUtils;
 
@@ -75,8 +82,8 @@ public class ChatClientBean {
                 String idConversacion = bean.getIdUserLogeado() + "-" + u.getId();
                 System.out.println("id de la conversación: " + idConversacion);
                 target = client
-                .target(base())
-                .path("com.aalvarotex.sd.sdchatv2.entities.chat");
+                        .target(base())
+                        .path("com.aalvarotex.sd.sdchatv2.entities.chat");
                 r = target.register(ChatReader.class)
                         .path("exists/{idConversacion}")
                         .resolveTemplate("idConversacion", idConversacion)
@@ -92,8 +99,8 @@ public class ChatClientBean {
                     // aquí debemos probar con el id opuesto
                     idConversacion = u.getId() + "-" + bean.getIdUserLogeado();
                     target = client
-                .target(base())
-                .path("com.aalvarotex.sd.sdchatv2.entities.chat");
+                            .target(base())
+                            .path("com.aalvarotex.sd.sdchatv2.entities.chat");
                     r = target.register(ChatReader.class)
                             .path("exists/{idConversacion}")
                             .resolveTemplate("idConversacion", idConversacion)
@@ -141,7 +148,7 @@ public class ChatClientBean {
         if (response.getStatus() == 200) {
             chats = response.readEntity(List.class);
         }
-        if(chats == null){
+        if (chats == null) {
             System.out.println("Chats es nulo");
         }
         return chats;
@@ -176,12 +183,12 @@ public class ChatClientBean {
         }
         return nombre;
     }
-    
-    public char getFirstLetterReceptor(String idConversacion){
+
+    public char getFirstLetterReceptor(String idConversacion) {
         return this.getNombreReceptor(idConversacion).charAt(0);
     }
-    
-       /**
+
+    /**
      *
      * @param idConversacion
      * @return
@@ -202,8 +209,8 @@ public class ChatClientBean {
         }
         return chats;
     }
-    
-    public Usuario getUsuarioById(){
+
+    public UsuarioDTO getUsuarioById() {
         Usuario u = new Usuario();
         target = client
                 .target(base())
@@ -213,30 +220,86 @@ public class ChatClientBean {
                 .resolveTemplate("id", bean.getIdUserLogeado())
                 .request(MediaType.APPLICATION_JSON)
                 .get();
-        if(response.getStatus() == 200){
+        if (response.getStatus() == 200) {
             u = response.readEntity(Usuario.class);
         }
-        return u;
+        UsuarioDetalles ud = new UsuarioDetalles();
+        target = client
+                .target(base())
+                .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+        response = target.register(UsuarioDetallesWriter.class)
+                .path("{id}")
+                .resolveTemplate("id", bean.getIdUserLogeado())
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        if (response.getStatus() == 200) {
+            ud = response.readEntity(UsuarioDetalles.class);
+        }
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setIdUsuario(u.getId());
+        if (ud.getColorPreferente().equalsIgnoreCase("NE")) {
+            dto.setColorPref("#ffffff");
+        } else {
+            dto.setColorPref(ud.getColorPreferente());
+        }
+        if (ud.getFotoPerfil().equalsIgnoreCase("NE")) {
+            dto.setFotoPerfil(Constantes.fotoPerfilDefecto);
+        } else {
+            dto.setFotoPerfil(ud.getFotoPerfil());
+        }
+        dto.setNombreUsuario(u.getNombreUsuario());
+        return dto;
     }
     
-        private String base() {
+    // devuelve la imagen de usuario dado id de la conversacion, en base64
+    public String getUserImgById(String idConversacion){
+        Long id1 = Long.parseLong(idConversacion.split("-")[0]);
+        Long id2 = Long.parseLong(idConversacion.split("-")[1]);
+        Long idReceptor = -1L;
+        if (Objects.equals(bean.getIdUserLogeado(), id1)) {
+            idReceptor = id2;
+        } else {
+            idReceptor = id1;
+        }
+        UsuarioDetalles ud = new UsuarioDetalles();
+        target = client
+                .target(base())
+                .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+        Response response = target.register(UsuarioDetallesWriter.class)
+                .path("{id}")
+                .resolveTemplate("id", idReceptor)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        if (response.getStatus() == 200) {
+            ud = response.readEntity(UsuarioDetalles.class);
+        }
+        String foto = "";
+        if(ud.getFotoPerfil().equalsIgnoreCase("NE")){
+            foto = Constantes.fotoPerfilDefecto;
+        } else{
+            foto = ud.getFotoPerfil();
+        }
+        return foto;
+    }
+
+    private String base() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String ctx = req.getContextPath();        // p.ej. "/sdChatv2" o "/sdchat"
         int port = req.getLocalPort();          // normalmente 8080 en la Pi
         return "http://localhost:" + port + ctx + "/webresources";
     }
-        
-        public String getDisplayTime(String fecha){
-            String display;
-            String texto = StringUtils.horaOHaceDias(fecha);
-            // si el texto tiene el formado hh:mm entonces el mensaje es del mismo dia
-            // no hace falta modificarlo
-            // si es un número, entonces el mensaje es de hace al menos un dia 
-            if(!texto.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")){
-                display = "hace " + texto + " días";
-            } else {
-                display = texto;
-            }
-            return display;
+
+    public String getDisplayTime(String fecha) {
+        String display;
+        String texto = StringUtils.horaOHaceDias(fecha);
+        // si el texto tiene el formado hh:mm entonces el mensaje es del mismo dia
+        // no hace falta modificarlo
+        // si es un número, entonces el mensaje es de hace al menos un dia 
+        if (!texto.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+            display = "hace " + texto + " días";
+        } else {
+            display = texto;
         }
+        return display;
+    }
 }

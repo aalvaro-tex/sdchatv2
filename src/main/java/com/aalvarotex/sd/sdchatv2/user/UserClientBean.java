@@ -8,6 +8,7 @@ package com.aalvarotex.sd.sdchatv2.user;
 import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter;
 import com.aalvarotex.sd.sdchatv2.login.LoginBackingBean;
+import com.aalvarotex.sd.sdchatv2.utils.Constantes;
 import com.aalvarotex.sd.sdchatv2.utils.ImageUtils;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -41,6 +42,32 @@ public class UserClientBean {
     @PostConstruct
     public void init() {
         client = ClientBuilder.newClient();
+    }
+    
+    // recupera los detalles del usuario
+    public void getUserDetails(){
+        UsuarioDetalles ud = new UsuarioDetalles();
+         target = client
+                .target(base())
+                .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+         
+        Response response = target.register(UsuarioDetallesWriter.class)
+                .path("{id}")
+                .resolveTemplate("id", userBackingBean.getIdUsuarioLogeado())
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        if (response.getStatus() == 200) {
+            ud = response.readEntity(UsuarioDetalles.class);
+        }
+        if(ud.getFotoPerfil().equalsIgnoreCase("NE")){
+            ud.setFotoPerfil(Constantes.fotoPerfilDefecto);
+        }
+        if(ud.getColorPreferente().equalsIgnoreCase("NE")){
+            ud.setColorPreferente(Constantes.colorPreferenteDefecto);
+        }
+        this.userBackingBean.setUd(ud);
+        this.userBackingBean.setFotoPerfilSrc(ud.getFotoPerfil());
+        System.out.println("Color pref: " + userBackingBean.getUd().getColorPreferente());
     }
 
     // guarda los cambios en los datos de usuario
