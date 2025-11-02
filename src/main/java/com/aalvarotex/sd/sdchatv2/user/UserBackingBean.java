@@ -10,6 +10,7 @@ import com.aalvarotex.sd.sdchatv2.utils.ImageUtils;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,16 +39,12 @@ public class UserBackingBean implements Serializable {
     private UserClientBean userClientBean;
     
     public void onPreRenderView() {
-        
             userClientBean.getUserDetails();
-        
     }
 
     public UploadedFile getFotoPerfil() {
         return fotoPerfil;
     }
-    
-    
 
     public void setFotoPerfil(UploadedFile fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
@@ -57,7 +54,7 @@ public class UserBackingBean implements Serializable {
     public String getNuevoNombre() {
         return nuevoNombre;
     }
-
+    
     public void setNuevoNombre(String nuevoNombre) {
         this.nuevoNombre = nuevoNombre;
     }
@@ -71,7 +68,9 @@ public class UserBackingBean implements Serializable {
     }
 
     public String getFotoPerfilSrc() {
-        return fotoPerfilSrc;
+        if(this.fotoPerfil != null){
+            return this.imageUtils.upload(fotoPerfil);
+        } else return fotoPerfilSrc;
     }
 
     public void setFotoPerfilSrc(String fotoPerfilSrc) {
@@ -92,6 +91,11 @@ public class UserBackingBean implements Serializable {
 
     public void setUd(UsuarioDetalles ud) {
         this.ud = ud;
+    }
+    
+    public void showInfo(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cambios guardados", mensaje);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     

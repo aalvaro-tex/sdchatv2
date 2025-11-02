@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : alvar
 */
 html, body{
-    height: 98vh;
+    height: 97vh;
 }
 
 .container{
@@ -58,7 +58,36 @@ html, body{
         width:95%;
     }
 
-   
+
+}
+
+.footer {
+    display:flex;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(209, 238, 255, 0.8);
+    height: 30px;
+    color: #000000;
+    padding:7px;
+    justify-content: space-between;
+    font-size: 15px;
+
+    a {
+        color: inherit; /* Inherit color from parent */
+        text-decoration: none; /* Remove underline */
+        cursor: auto; /* Default cursor */
+    }
+    a:visited, a:focus, a:active {
+        color: inherit;
+        text-decoration: none;
+        cursor: auto;
+    }
+    a:hover{
+        cursor: pointer;
+    }
 }
 
 /* Accesibilidad mínima */

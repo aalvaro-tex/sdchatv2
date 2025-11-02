@@ -68,6 +68,7 @@ public class UserClientBean {
         this.userBackingBean.setUd(ud);
         this.userBackingBean.setFotoPerfilSrc(ud.getFotoPerfil());
         System.out.println("Color pref: " + userBackingBean.getUd().getColorPreferente());
+        System.out.println("Imagen de perfil: " + userBackingBean.getUd().getFotoPerfil());
     }
 
     // guarda los cambios en los datos de usuario
@@ -93,7 +94,10 @@ public class UserClientBean {
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(ud, MediaType.APPLICATION_JSON));
 
-        System.out.println(r.toString());
+       System.out.println(r.toString());
+       if(r.getStatus() == 204){
+           userBackingBean.showInfo("Los cambios se han guardado correctamente!");
+       }
     }
     
     private String base() {

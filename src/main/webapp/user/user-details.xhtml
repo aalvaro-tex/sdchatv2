@@ -86,9 +86,9 @@ and open the template in the editor.
                         </div>
                 </h:form>
                 <h:form>
-                    <p:commandButton id="saveBtn" icon="pi pi-save" styleClass="rounded-button ui-button-primary" action="#{userClientBean.saveChanges()}"/>
-                        <p:tooltip for="saveBtn" value="Guardar cambios" position="left"/>
-                   
+                    <p:commandButton value="Guardar cambios" id="saveBtn" styleClass="rounded-button ui-button-primary" action="#{userClientBean.saveChanges()}" update="growlUpdate"/>
+                       
+                   <p:growl id="growlUpdate" showDetail="true"/>
                 </h:form>
 
 
@@ -116,7 +116,7 @@ and open the template in the editor.
                         <!-- Fallback si no hay imagen -->
                         <h:panelGroup rendered="#{empty userBackingBean.fotoPerfilSrc}">
                             <span style="color:#dbe5ea; font-weight:700; font-size:2rem;">
-                                #{userInfoBean.initials}
+                                NE
                             </span>
                         </h:panelGroup>
                     </div>
@@ -141,7 +141,7 @@ and open the template in the editor.
                     </div>
                 </p:dialog>
 
-                <p:messages showDetail="true" closable="true" styleClass="ui-messages"/>
+                
             </h:form>
         </div>
     </h:body>
