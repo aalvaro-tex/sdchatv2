@@ -60,10 +60,10 @@ public class UserClientBean {
             ud = response.readEntity(UsuarioDetalles.class);
         }
         if(ud.getFotoPerfil().equalsIgnoreCase("NE")){
-            ud.setFotoPerfil(Constantes.fotoPerfilDefecto);
+            ud.setFotoPerfil(Constantes.FOTO_PERFIL_DEFECTO);
         }
         if(ud.getColorPreferente().equalsIgnoreCase("NE")){
-            ud.setColorPreferente(Constantes.colorPreferenteDefecto);
+            ud.setColorPreferente(Constantes.COLOR_PREFERENTE_DEFECTO);
         }
         this.userBackingBean.setUd(ud);
         this.userBackingBean.setFotoPerfilSrc(ud.getFotoPerfil());

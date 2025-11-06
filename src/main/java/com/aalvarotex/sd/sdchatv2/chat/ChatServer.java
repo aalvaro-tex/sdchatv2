@@ -8,6 +8,7 @@ package com.aalvarotex.sd.sdchatv2.chat;
 import com.aalvarotex.sd.sdchatv2.entities.Chat;
 import com.aalvarotex.sd.sdchatv2.json.ChatWriter;
 import com.aalvarotex.sd.sdchatv2.login.LoginBackingBean;
+import com.aalvarotex.sd.sdchatv2.utils.Constantes;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -53,8 +54,9 @@ import javax.ws.rs.core.Response;
  */
 @ServerEndpoint("/websocket/{room}")
 public class ChatServer {
-    
-     public static class Config extends ServerEndpointConfig.Configurator {
+
+    public static class Config extends ServerEndpointConfig.Configurator {
+
         @Override
         public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest req, HandshakeResponse resp) {
             // guardamos headers y requestURI para usarlos en onOpen
@@ -67,7 +69,7 @@ public class ChatServer {
     private static final Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
 
     private final Map<String, Long> dedupe = new ConcurrentHashMap<>();
-    private static final long DEDUPE_TTL_MS = 3000; // 3s
+    
 
     @Inject
     LoginBackingBean loginBean;
@@ -93,14 +95,14 @@ public class ChatServer {
 
         if (u != null && u.isAbsolute()) {
             scheme = "wss".equalsIgnoreCase(u.getScheme()) ? "https" : "http";
-            host   = u.getHost();
-            port   = u.getPort();
+            host = u.getHost();
+            port = u.getPort();
         }
 
         // 2) Si no hay host, miramos el header Host de la handshake
         if (host == null || host.isEmpty()) {
             @SuppressWarnings("unchecked")
-            Map<String,List<String>> headers = (Map<String,List<String>>) peer.getUserProperties().get("headers");
+            Map<String, List<String>> headers = (Map<String, List<String>>) peer.getUserProperties().get("headers");
             if (headers != null) {
                 List<String> hostHeader = headers.get("Host");
                 if (hostHeader != null && !hostHeader.isEmpty()) {
@@ -108,7 +110,10 @@ public class ChatServer {
                     int idx = h.indexOf(':');
                     if (idx > 0) {
                         host = h.substring(0, idx);
-                        try { port = Integer.parseInt(h.substring(idx + 1)); } catch (NumberFormatException ignore) {}
+                        try {
+                            port = Integer.parseInt(h.substring(idx + 1));
+                        } catch (NumberFormatException ignore) {
+                        }
                     } else {
                         host = h;
                     }
@@ -124,11 +129,17 @@ public class ChatServer {
         String ctx = "";
         if (path != null) {
             int cut = path.indexOf("/websocket/");
-            if (cut > 0) ctx = path.substring(0, cut); // ej. "/sdChatv2"
+            if (cut > 0) {
+                ctx = path.substring(0, cut); // ej. "/sdChatv2"
+            }
         }
 
-        if (host == null || host.isEmpty()) host = "localhost";
-        if (port == -1) port = "https".equalsIgnoreCase(scheme) ? 443 : 80;
+        if (host == null || host.isEmpty()) {
+            host = "localhost";
+        }
+        if (port == -1) {
+            port = "https".equalsIgnoreCase(scheme) ? 443 : 80;
+        }
 
         baseUri = scheme + "://" + host + ((port == 80 && scheme.equals("http")) || (port == 443 && scheme.equals("https")) ? "" : ":" + port)
                 + ctx + "/webresources";
@@ -146,7 +157,10 @@ public class ChatServer {
     @OnClose
     public void onClose(Session peer) {
         peers.remove(peer);
-        if (peers.isEmpty() && client != null) { client.close(); client = null; }
+        if (peers.isEmpty() && client != null) {
+            client.close();
+            client = null;
+        }
     }
 
     /**
@@ -208,62 +222,77 @@ public class ChatServer {
     private boolean tryAcquireOnce(String key) {
         long now = System.currentTimeMillis();
         // purga simple por tiempo
-        dedupe.entrySet().removeIf(e -> now - e.getValue() > DEDUPE_TTL_MS);
+        dedupe.entrySet().removeIf(e -> now - e.getValue() > Constantes.DEDUPE_TTL_MS);
         return dedupe.putIfAbsent(key, now) == null; // true si no existía
     }
-   
 
-private WebTarget ensureChatTarget(Session session) {
-    if (client == null) {
-        synchronized (this) {
-            if (client == null) client = ClientBuilder.newClient();
-        }
-    }
-    if (target == null) {
-        synchronized (this) {
-            if (target == null) {
-                URI u = session.getRequestURI(); // ej: ws://host:8080/context/websocket/room
-                String scheme = (u != null && "wss".equalsIgnoreCase(u.getScheme())) ? "https" : "http";
-                String host   = (u != null) ? u.getHost() : null;
-                int port      = (u != null) ? u.getPort() : -1;
-                String path   = (u != null) ? u.getPath() : "";
-
-                // Fallback si el contenedor no da URI absoluta
-                if (host == null || host.isEmpty()) {
-                    @SuppressWarnings("unchecked")
-                    Map<String,List<String>> headers = (Map<String,List<String>>) session.getUserProperties().get("headers");
-                    if (headers != null) {
-                        List<String> hostHeader = headers.get("Host");
-                        if (hostHeader != null && !hostHeader.isEmpty()) {
-                            String h = hostHeader.get(0);
-                            int idx = h.indexOf(':');
-                            if (idx > 0) { host = h.substring(0,idx); try { port = Integer.parseInt(h.substring(idx+1)); } catch (Exception ignore) {} }
-                            else host = h;
-                        }
-                        List<String> xfProto = headers.get("X-Forwarded-Proto");
-                        if (xfProto != null && !xfProto.isEmpty()) scheme = xfProto.get(0);
-                    }
+    private WebTarget ensureChatTarget(Session session) {
+        if (client == null) {
+            synchronized (this) {
+                if (client == null) {
+                    client = ClientBuilder.newClient();
                 }
-
-                String ctx = "";
-                int cut = path.indexOf("/websocket/");
-                if (cut > 0) ctx = path.substring(0, cut);
-
-                if (host == null || host.isEmpty()) host = "localhost";
-                if (port < 0) port = "https".equalsIgnoreCase(scheme) ? 443 : 80;
-                String portPart = ((port == 80 && "http".equals(scheme)) || (port == 443 && "https".equals(scheme))) ? "" : (":" + port);
-
-                baseUri = scheme + "://" + host + portPart + ctx + "/webresources";
-                logger.log(Level.INFO, "Base REST URI: {0}", baseUri);
-
-                target = client.target(baseUri)
-                                   .path("com.aalvarotex.sd.sdchatv2.entities.chat");
             }
         }
-    }
-    return target;
-}
+        if (target == null) {
+            synchronized (this) {
+                if (target == null) {
+                    URI u = session.getRequestURI(); // ej: ws://host:8080/context/websocket/room
+                    String scheme = (u != null && "wss".equalsIgnoreCase(u.getScheme())) ? "https" : "http";
+                    String host = (u != null) ? u.getHost() : null;
+                    int port = (u != null) ? u.getPort() : -1;
+                    String path = (u != null) ? u.getPath() : "";
 
+                    // Fallback si el contenedor no da URI absoluta
+                    if (host == null || host.isEmpty()) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, List<String>> headers = (Map<String, List<String>>) session.getUserProperties().get("headers");
+                        if (headers != null) {
+                            List<String> hostHeader = headers.get("Host");
+                            if (hostHeader != null && !hostHeader.isEmpty()) {
+                                String h = hostHeader.get(0);
+                                int idx = h.indexOf(':');
+                                if (idx > 0) {
+                                    host = h.substring(0, idx);
+                                    try {
+                                        port = Integer.parseInt(h.substring(idx + 1));
+                                    } catch (Exception ignore) {
+                                    }
+                                } else {
+                                    host = h;
+                                }
+                            }
+                            List<String> xfProto = headers.get("X-Forwarded-Proto");
+                            if (xfProto != null && !xfProto.isEmpty()) {
+                                scheme = xfProto.get(0);
+                            }
+                        }
+                    }
+
+                    String ctx = "";
+                    int cut = path.indexOf("/websocket/");
+                    if (cut > 0) {
+                        ctx = path.substring(0, cut);
+                    }
+
+                    if (host == null || host.isEmpty()) {
+                        host = "localhost";
+                    }
+                    if (port < 0) {
+                        port = "https".equalsIgnoreCase(scheme) ? 443 : 80;
+                    }
+                    String portPart = ((port == 80 && "http".equals(scheme)) || (port == 443 && "https".equals(scheme))) ? "" : (":" + port);
+
+                    baseUri = scheme + "://" + host + portPart + ctx + "/webresources";
+                    logger.log(Level.INFO, "Base REST URI: {0}", baseUri);
+
+                    target = client.target(baseUri)
+                            .path("com.aalvarotex.sd.sdchatv2.entities.chat");
+                }
+            }
+        }
+        return target;
+    }
 
     public void saveMessage(Session session, Long idEmisor, Long idReceptor, String idConversacion, String message) {
         String key = buildKey(idEmisor, idReceptor, idConversacion, message);
@@ -280,18 +309,18 @@ private WebTarget ensureChatTarget(Session session) {
             c.setIdReceptor(idReceptor);
             c.setMensaje(message);
             c.setTimestamp(timestamp);
-            
-             WebTarget wtarget = ensureChatTarget(session);
-           
+
+            WebTarget wtarget = ensureChatTarget(session);
+
             logger.log(Level.INFO, "POST {0}", wtarget.getUri());
 
             Response response = wtarget.register(ChatWriter.class)
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(c, MediaType.APPLICATION_JSON));
-            
+
             logger.log(Level.INFO, "Añadir mensaje -> HTTP {0}", response.getStatus());
         } else {
-            System.out.println("Duplicado detectado (TTL). No lo guardo");
+            System.out.println("Duplicado detectado. No lo guardo");
         }
     }
 }

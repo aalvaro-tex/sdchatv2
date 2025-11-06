@@ -238,12 +238,12 @@ public class ChatClientBean {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setIdUsuario(u.getId());
         if (ud.getColorPreferente().equalsIgnoreCase("NE")) {
-            dto.setColorPref("#ffffff");
+            dto.setColorPref(Constantes.COLOR_PREFERENTE_DEFECTO);
         } else {
             dto.setColorPref(ud.getColorPreferente());
         }
         if (ud.getFotoPerfil().equalsIgnoreCase("NE")) {
-            dto.setFotoPerfil(Constantes.fotoPerfilDefecto);
+            dto.setFotoPerfil(Constantes.FOTO_PERFIL_DEFECTO);
         } else {
             dto.setFotoPerfil(ud.getFotoPerfil());
         }
@@ -275,7 +275,7 @@ public class ChatClientBean {
         }
         String foto = "";
         if(ud.getFotoPerfil().equalsIgnoreCase("NE")){
-            foto = Constantes.fotoPerfilDefecto;
+            foto = Constantes.FOTO_PERFIL_DEFECTO;
         } else{
             foto = ud.getFotoPerfil();
         }
