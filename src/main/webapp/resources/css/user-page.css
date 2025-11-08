@@ -202,11 +202,21 @@ body .ui-datatable .ui-datatable-data > tr > td {
 #mediaBtn:disabled:hover{
     cursor: no-drop;
 }
-
+.avatar-wrap{ 
+    position:relative; 
+    width:220px; 
+    height:220px; 
+    margin:1rem auto; 
+    margin-left: 20px;
+}
 @media (max-width: 768px) {
     .chat-header{
         border-radius: 10px;
         border: solid 1px #dee2e6;
         padding-left: 0px;
+    }
+
+    .avatar-wrap{
+        margin:0 auto;
     }
 }
