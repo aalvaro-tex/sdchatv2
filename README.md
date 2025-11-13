@@ -83,6 +83,11 @@ Compilamos y desplegamos el proyecto. Se abrirá automáticamente en el navegado
 
 - Podemos cambiar nuestra foto de perfil, que verán el resto de usuarios
 
+ ### Dispositivos móviles
+
+La aplicación está diseñada para adaptarse a dispositivos móviles, cambiando los estilos y la forma de presentar las vistas.
+  
+
 ## 🌐 Sockets y WebSockets
 
 El proyecto muestra el uso de:
@@ -95,4 +100,17 @@ El proyecto muestra el uso de:
 
 
 ## 🧑‍🏫 Créditos
+
+## Capturas de pantalla
+
+<img width="1895" height="937" alt="image" src="https://github.com/user-attachments/assets/87f12ce5-cd73-41e3-b9d1-3dbfe8c8b1fd" />
+<img width="1893" height="940" alt="image" src="https://github.com/user-attachments/assets/2fb4d6e3-b7e5-4586-80f9-499aa34bb760" />
+<img width="1897" height="939" alt="image" src="https://github.com/user-attachments/assets/27afbc1b-a2b9-4a0b-9142-2e66771e080e" />
+<img width="1897" height="939" alt="image" src="https://github.com/user-attachments/assets/72b134ab-0631-4e50-abe6-3b7e6346c4e5" />
+<img width="1896" height="938" alt="image" src="https://github.com/user-attachments/assets/02228528-9e02-4f53-8f0e-f12e14d323b1" />
+<img width="1735" height="1129" alt="image" src="https://github.com/user-attachments/assets/15c35064-105c-4c45-9173-a3bb4f07739f" />
+
+
+
+
 
