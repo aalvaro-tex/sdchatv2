@@ -70,7 +70,7 @@ Recomendable para configurar facilmente el servidor
 
 Crear un servidor Payara y una BBDD PostgreSQL _sdChat_. Por defecto, al reiniciar el servidor la BBDD se borra y genera los esquemas de cero. Por lo tanto, solamente es necesario tener la BBDD creada vacía.
 
-### Build + Deploy
+### 4. Build + Deploy
 
 Compilamos y desplegamos el proyecto. Se abrirá automáticamente en el navegador la página de inicio de sesión.
 
@@ -80,6 +80,8 @@ Compilamos y desplegamos el proyecto. Se abrirá automáticamente en el navegado
 - Una vez creada, se inicia sesión automáticamente.
 - Iniciamos una nueva conversación con el icono ➕ y escribimos el nombre de usuario con el que queremos hablar
 - Si existe, se nos carga la vista de chat para hablar
+
+- Podemos cambiar nuestra foto de perfil, que verán el resto de usuarios
 
 ## 🌐 Sockets y WebSockets
 
