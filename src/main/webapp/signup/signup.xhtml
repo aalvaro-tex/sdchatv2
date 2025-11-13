@@ -14,12 +14,12 @@ and open the template in the editor.
         <title>sdChat - Nuevo usuario</title>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <link rel="stylesheet" href="#{resource['css/login-page.css']}"></link>
-        <link rel="icon" type="image/x-icon" href="#{resource['icon/sdChat-favicon.png']}"></link>
+        <link rel="icon" type="image/x-icon" href="#{resource['icon/logo_sdChat_v2.png']}"></link>
     </h:head>
     <h:body>
         <div class="container">
             <p:card class="card-logo-container">
-                <img src="#{resource['img/sdChat-banner.png']}" />
+                <img src="#{resource['img/sdChatv2_banner_v2.png']}" />
             </p:card>
             <p:card class="card-logo-container">
                 <f:facet name="title">
@@ -43,10 +43,16 @@ and open the template in the editor.
                 </h:form>
             </p:card>
         </div>
-        <div class="footer">
-            <a href="https://aalvaro-tex.info" target="blank">aalvaro-tex.info <i class="pi pi-chevron-right"></i></a>
-            <a> 2025</a>
-        </div>
+        
+        <script>
+            function goToAalvaroTex(){
+                window.open('https://aalvaro-tex.info', '_blank');
+            }
+        </script>
+        
+        <div class="floating-icon">
+        <img src="#{resource['icon/logo_aatex.png']}" alt="Ir a aalvaro-tex" title="Ir a aalvaro-tex" onclick="goToAalvaroTex()"/>
+    </div>
     </h:body>
 
 </html>

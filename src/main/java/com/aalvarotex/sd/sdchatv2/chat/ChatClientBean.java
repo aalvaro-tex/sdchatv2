@@ -14,7 +14,6 @@ import com.aalvarotex.sd.sdchatv2.json.ChatWriter;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioReader;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioWriter;
-import com.aalvarotex.sd.sdchatv2.login.LoginBackingBean;
 import com.aalvarotex.sd.sdchatv2.utils.Constantes;
 import com.aalvarotex.sd.sdchatv2.utils.StringUtils;
 import java.util.ArrayList;
@@ -280,6 +279,18 @@ public class ChatClientBean {
             foto = ud.getFotoPerfil();
         }
         return foto;
+    }
+    
+    // elimina una conversación de la BD
+    public String deleteConversacion(String id){
+        target = client
+                .target(base())
+                .path("com.aalvarotex.sd.sdchatv2.entities.chat");
+        
+        target.path("delete-chat/{id}").resolveTemplate("id", id).request().delete();
+        logger.info("Conversaciones borradas");
+        bean.setIdConversacionSelected("0-0");
+        return "deleteOk";
     }
 
     private String base() {

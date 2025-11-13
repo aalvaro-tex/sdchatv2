@@ -60,6 +60,17 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
+    
+    @DELETE
+    @Path("delete-chat/{id}")
+    public void deleteChatById(@PathParam("id") String id){
+        List<Chat> all = this.findAll();
+        for(Chat c : all){
+            if(c.getIdConversacion().equalsIgnoreCase(id)){
+                this.remove(c);
+            }
+        }
+    }
 
     @GET
     @Path("{id}")

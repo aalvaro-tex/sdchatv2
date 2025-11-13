@@ -82,27 +82,27 @@
                     }</script>
                 <p:dialog draggable="false" resizable="false" modal="true" header="Nueva conversación" widgetVar="nuevaConversacionModal"  width="350" showEffect="fade"  closeOnEscape="false">
                     <h:form>
-                         <p:ajaxStatus 
-        onstart="PF('loadingDialog').show()" 
-        onsuccess="PF('loadingDialog').hide()"
-        onerror="PF('loadingDialog').hide()" />
+                        <p:ajaxStatus 
+                            onstart="PF('loadingDialog').show()" 
+                            onsuccess="PF('loadingDialog').hide()"
+                            onerror="PF('loadingDialog').hide()" />
 
-    <!-- 2. MODAL CENTRADO CON SPINNER -->
-    <p:dialog id="dlgLoading"
-                          widgetVar="loadingDialog"
-                          modal="true"
-                          closable="false"
-                          draggable="false"
-                          resizable="false"
-                          showHeader="false"
-                          appendTo="@(body)"
-                          width="100"
-                          >
+                        <!-- 2. MODAL CENTRADO CON SPINNER -->
+                        <p:dialog id="dlgLoading"
+                                  widgetVar="loadingDialog"
+                                  modal="true"
+                                  closable="false"
+                                  draggable="false"
+                                  resizable="false"
+                                  showHeader="false"
+                                  appendTo="@(body)"
+                                  width="100"
+                                  >
 
-                    <div style="text-align:center; padding-top:30px;">
-                        <i class="pi pi-spin pi-spinner" style="font-size:2rem;"></i>
-                    </div>
-                </p:dialog>
+                            <div style="text-align:center; padding-top:30px;">
+                                <i class="pi pi-spin pi-spinner" style="font-size:2rem;"></i>
+                            </div>
+                        </p:dialog>
                         <div class="div-modal-form-container">
                             <p>Escribe el nombre de usuario con el que quieres hablar</p>
                             <div class="div-modal-form">
@@ -139,9 +139,15 @@
                                 </p:avatar>
                                 <div class="receptor-name">
                                     <p style="font-size: 20pt;">#{chatBackingBean.idConversacionSelected != null ? chatClientBean.getNombreReceptor(chatBackingBean.idConversacionSelected) : 'Selecciona un chat'}</p>
-                                </div>             
-                            </div>
+                                </div> 
 
+                            </div>
+                            <h:form>
+                                <p:commandButton styleClass="rounded-button ui-button-danger ui-button-flat" icon="pi pi-trash"
+                                                 action="#{chatClientBean.deleteConversacion(chatBackingBean.idConversacionSelected)}">
+                                </p:commandButton>
+                                <p:tooltip for="@previous" value="Eliminar conversación"></p:tooltip> 
+                            </h:form>
                         </div>
                         <div class="chat-content">
 
@@ -161,7 +167,7 @@
                                     </div>
                                 </p:column>
                             </p:dataTable>
-                              <p:remoteCommand name="rcActualizarTabla" update="chatMessages" />
+                            <p:remoteCommand name="rcActualizarTabla" update="chatMessages" />
                         </div>
                         <div class="message-input">
 
@@ -177,7 +183,7 @@
                                     <p:inputText id="campoTexto" style="width:95%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
                                     <h:form>
                                         <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages">
-                                           
+
                                         </p:commandButton>
                                         <p:tooltip for="sendBtn" value="Enviar mensaje" />
                                     </h:form>
