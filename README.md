@@ -24,6 +24,11 @@ para:
 -   **Java EE 7**
 -   **HTML / CSS / JavaScript**
 
+### Frameworks
+
+- JSF 2.3
+- PrimeFaces
+
 ## 🗂 Estructura general del proyecto
 
     sdchatv2/
@@ -33,8 +38,16 @@ para:
     ├─ src/
     │  └─ main/
     │     ├─ java/
+    |     |    └─ chat
+    |     |    └─ dto
+    |     |    └─ entities
+    |     |    └─ jaas
+    |     |    └─ json
+    |     |    └─ login
+    |     |    └─ rest
+    |     |    └─ user
+    |     |    └─ utils
     │     └─ webapp/
-    └─ target/
 
 ## ✅ Requisitos
 
@@ -49,21 +62,24 @@ para:
     git clone https://github.com/aalvaro-tex/sdchatv2.git
     cd sdchatv2
 
-### 2. Compilación
+### 2. Abrir en NetBeans
 
-    mvn clean package
+Recomendable para configurar facilmente el servidor
 
-### 3. Despliegue
+### 3. Servidor Payara y BBDD
 
-Despliega `target/sdchatv2.war` en tu servidor.
+Crear un servidor Payara y una BBDD PostgreSQL _sdChat_. Por defecto, al reiniciar el servidor la BBDD se borra y genera los esquemas de cero. Por lo tanto, solamente es necesario tener la BBDD creada vacía.
 
-Accede normalmente mediante:
+### Build + Deploy
 
-    http://localhost:8080/sdchatv2/
+Compilamos y desplegamos el proyecto. Se abrirá automáticamente en el navegador la página de inicio de sesión.
 
 ## 💬 Uso
 
-1.  Abre la aplicación en navegador.
+- Si no tenemos cuenta, podemos crear una proporcionando un nombre de usuario y una contraseña (a día 13//11/2025 no tiene restricciones).
+- Una vez creada, se inicia sesión automáticamente.
+- Iniciamos una nueva conversación con el icono ➕ y escribimos el nombre de usuario con el que queremos hablar
+- Si existe, se nos carga la vista de chat para hablar
 
 ## 🌐 Sockets y WebSockets
 
