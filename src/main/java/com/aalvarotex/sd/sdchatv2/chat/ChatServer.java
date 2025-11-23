@@ -69,7 +69,6 @@ public class ChatServer {
     private static final Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
 
     private final Map<String, Long> dedupe = new ConcurrentHashMap<>();
-    
 
     @Inject
     LoginBackingBean loginBean;

@@ -22,7 +22,7 @@ import org.primefaces.model.file.UploadedFile;
 @Named
 @ManagedBean
 @SessionScoped
-public class ImageUtils implements Serializable{
+public class ImageUtils implements Serializable {
 
     /**
      *

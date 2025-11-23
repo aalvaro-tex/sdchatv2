@@ -1,0 +1,129 @@
+/* ============================
+      TEMA OSCURO (dark.css)
+   ============================ */
+
+/* Variables principales */
+:root {
+    --color-bg: #121212;
+    --color-surface: #1E1E1E;
+    --color-surface-alt: #242424;
+    --color-border: #f5f5f5;
+
+    --color-text: #f5f5f5;
+    --color-text-muted: #b3b3b3;
+
+    --color-primary: #90CAF9;        /* azul suave para dark */
+    --color-primary-hover: #64B5F6;
+    --color-secondary: #A5D6A7;
+    --color-danger: #EF5350;
+
+    --shadow-elevated: 0 4px 12px rgba(0,0,0,0.45);
+}
+
+/* Fondo general */
+body {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+}
+
+/* Contenedores */
+.chat-container,
+.chat-list-container,
+.user-settings-container,
+.card,
+.preview-card {
+    background-color: var(--color-surface) !important;
+    color: var(--color-text);
+    border-color: var(--color-border) !important;
+}
+
+.ui-datatable .ui-datatable-data {
+    tr{
+        background-color: var(--color-surface) !important;
+        color: var(--color-text) !important;
+        border-color: var(--color-border) !important;
+    }
+}
+
+/* Títulos */
+#divider-icon,
+.chat-list-title b,
+.user-settings-container b,
+p, label, span {
+    color: var(--color-text) !important;
+}
+
+/* Botones */
+.ui-button-primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #0b0b0b !important;
+}
+
+.ui-button-primary:hover,
+.ui-button{
+    background-color: var(--color-primary-hover) !important;
+}
+
+.ui-button-secondary,
+.ui-button-flat,
+.ui-button-info,
+.ui-button,
+.ui-button-outlined {
+    background-color: var(--color-surface-alt) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.ui-button-danger {
+    background-color: var(--color-danger) !important;
+    border-color: var(--color-danger) !important;
+    color: #fff !important;
+}
+
+/* Inputs */
+.ui-inputfield,
+input,
+textarea {
+    background-color: var(--color-surface-alt) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.ui-inputfield::placeholder {
+    color: var(--color-text-muted) !important;
+}
+
+/* Lista de conversaciones */
+.chat-list-item {
+    background-color: var(--color-surface-alt) !important;
+    border-color: var(--color-border) !important;
+}
+
+/* Tablas y mensajes */
+.ui-datatable,
+.ui-datascroller-content,
+.message-container-emisor,
+.message-container-receptor {
+    background-color: var(--color-surface-alt) !important;
+    color: var(--color-text);
+}
+
+/* Diálogos */
+.ui-dialog {
+    background: var(--color-surface) !important;
+    border-color: var(--color-border) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: var(--color-surface-alt) !important;
+    color: var(--color-text) !important;
+}
+
+.ui-divider .ui-divider-content{
+    background-color: var(--color-surface) !important;
+}
+
+.ui-dialog .ui-dialog-content{
+    background-color: var(--color-surface-alt) !important;
+}

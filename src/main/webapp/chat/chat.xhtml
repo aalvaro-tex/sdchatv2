@@ -182,7 +182,7 @@
                                     <p:outputLabel value="Mensaje" for="campoTexto" style="display: none" />
                                     <p:inputText id="campoTexto" style="width:95%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
                                     <h:form>
-                                        <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages">
+                                        <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages" global="false">
 
                                         </p:commandButton>
                                         <p:tooltip for="sendBtn" value="Enviar mensaje" />

@@ -16,6 +16,7 @@ import com.aalvarotex.sd.sdchatv2.json.UsuarioReader;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioWriter;
 import com.aalvarotex.sd.sdchatv2.utils.Constantes;
 import com.aalvarotex.sd.sdchatv2.utils.StringUtils;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +41,7 @@ import javax.ws.rs.core.Response;
 @Named
 @RequestScoped
 public class ChatClientBean {
-    
-    
+
     private static final Logger logger = Logger.getLogger(ChatClientBean.class.getName());
     Client client;
     WebTarget target;
@@ -236,10 +236,10 @@ public class ChatClientBean {
         }
         UsuarioDTO dto = new UsuarioDTO();
         dto.setIdUsuario(u.getId());
-        if (ud.getColorPreferente().equalsIgnoreCase("NE")) {
+        if (ud.getTema().equalsIgnoreCase("NE")) {
             dto.setColorPref(Constantes.COLOR_PREFERENTE_DEFECTO);
         } else {
-            dto.setColorPref(ud.getColorPreferente());
+            dto.setColorPref(ud.getTema());
         }
         if (ud.getFotoPerfil().equalsIgnoreCase("NE")) {
             dto.setFotoPerfil(Constantes.FOTO_PERFIL_DEFECTO);
@@ -249,9 +249,9 @@ public class ChatClientBean {
         dto.setNombreUsuario(u.getNombreUsuario());
         return dto;
     }
-    
+
     // devuelve la imagen de usuario dado id de la conversacion, en base64
-    public String getUserImgById(String idConversacion){
+    public String getUserImgById(String idConversacion) {
         Long id1 = Long.parseLong(idConversacion.split("-")[0]);
         Long id2 = Long.parseLong(idConversacion.split("-")[1]);
         Long idReceptor = -1L;
@@ -273,24 +273,25 @@ public class ChatClientBean {
             ud = response.readEntity(UsuarioDetalles.class);
         }
         String foto = "";
-        if(ud.getFotoPerfil().equalsIgnoreCase("NE")){
+        if (ud.getFotoPerfil().equalsIgnoreCase("NE")) {
             foto = Constantes.FOTO_PERFIL_DEFECTO;
-        } else{
+        } else {
             foto = ud.getFotoPerfil();
         }
         return foto;
     }
-    
+
     // elimina una conversación de la BD
-    public String deleteConversacion(String id){
+    public void deleteConversacion(String id) throws IOException {
         target = client
                 .target(base())
                 .path("com.aalvarotex.sd.sdchatv2.entities.chat");
-        
+
         target.path("delete-chat/{id}").resolveTemplate("id", id).request().delete();
         logger.info("Conversaciones borradas");
         bean.setIdConversacionSelected("0-0");
-        return "deleteOk";
+        FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" + bean.getIdUserLogeado());
     }
 
     private String base() {

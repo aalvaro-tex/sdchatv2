@@ -82,29 +82,28 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     /* Método propio 
        Recupera un usuario dado su nombre de usuario
-    */
-    
+     */
     @GET
     @Path("find-by-username/{username}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Usuario findByUsername(@PathParam("username") String username){
+    public Usuario findByUsername(@PathParam("username") String username) {
         List<Usuario> all = this.findAll();
         Usuario found = null;
-        for(Usuario u : all){
-            if(u.getNombreUsuario().equalsIgnoreCase(username)){
+        for (Usuario u : all) {
+            if (u.getNombreUsuario().equalsIgnoreCase(username)) {
                 found = u;
             }
         }
-        System.out.println(found != null ? found.getNombreUsuario() : "no" );
-     return found;   
+        System.out.println(found != null ? found.getNombreUsuario() : "no");
+        return found;
     }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

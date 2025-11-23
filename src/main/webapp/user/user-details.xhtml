@@ -47,29 +47,9 @@ and open the template in the editor.
                 border-radius: 50%;
             }
         </style>
-        <style>
-            /* --- avatar grande --- */
-
-            .avatar-circle{
-                width:100%; height:100%; border-radius:50%;
-                overflow:hidden; border:3px solid #0b3a4a;                 /* contorno oscuro */
-                background:#1b5f75;                                        /* color de fondo si no hay foto */
-                display:flex; align-items:center; justify-content:center;
-            }
-            .avatar-circle img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-            /* --- botón redondo superpuesto --- */
-            .edit-fab{
-                position:absolute; right:6px; bottom:6px;                   /* esquina inferior derecha */
-                width:56px; height:56px; border-radius:50%;
-                border:3px solid #0b3a4a;                                   /* contorno como el del avatar */
-                display:flex; align-items:center; justify-content:center;
-                box-shadow:0 2px 6px rgba(0,0,0,.25);
-            }
-            /* fuerza el rojo y redondeado de PrimeFaces */
-            .p-button.edit-fab{ background:#e70000; border-color:#e70000; }
-            .p-button.edit-fab .pi{ font-size:1.25rem; color:#fff; }
-        </style>
+         <h:outputStylesheet library="css" name="themes/dark.css" rendered="#{loginBackingBean.temaUsuario == 'dark'}"/>
+         <h:outputStylesheet library="css" name="themes/green.css" rendered="#{loginBackingBean.temaUsuario == 'green'}"/>
+         <h:outputStylesheet library="css" name="themes/pink.css" rendered="#{loginBackingBean.temaUsuario == 'pink'}"/>
     </h:head>
 
     <h:body>
@@ -77,11 +57,14 @@ and open the template in the editor.
             <f:viewParam name="user" value="#{userBackingBean.idUsuarioLogeado}" />
             <f:event type="preRenderView" listener="#{userBackingBean.onPreRenderView}"/>
         </f:metadata>
-        <div class="chat-list-container" >
-            <div class="chat-list-title">
+        <div class="user-settings-container" >
+            <div class="user-settings-title">
                 <h:form>
                     <div class="buttons-container">
-                        <p:linkButton id="backButton" styleClass="rounded-button ui-button-flat" icon="pi pi-chevron-left" outcome="/chat/chat.xhtml"></p:linkButton>
+                        <p:linkButton id="backButton" styleClass="rounded-button ui-button-flat" icon="pi pi-chevron-left" outcome="/chat/chat.xhtml">
+                            <f:param name="idConversacion" value="0-0"/>
+                            <f:param name="user" value="#{chatBackingBean.idUserLogeado}"/>
+                        </p:linkButton>
 
                         <p:tooltip for="backButton" value="Volver a mis chats" position="right"/>
                     </div>
@@ -99,16 +82,12 @@ and open the template in the editor.
             <p:divider align="left">
                 <div class="inline-flex align-items-center">
                     <i class="pi pi-id-card" id="divider-icon"/>
-                    <b>Mis datos</b>
+                    <b>Mi foto de perfil</b>
                 </div>
             </p:divider>
-            <!--
-            <div class="field col-12 md:col-2 thumbnail">
-                <p:outputLabel for="@next" value="Color preferente" />
-                <p:colorPicker  id="thumbnail" value="#{userBackingBean.colorPreferente}">
-                </p:colorPicker>
-            </div>
-            -->
+
+            
+
             <h:form id="form" style="display:flex;">
                 <p:ajaxStatus 
                     onstart="PF('loadingDialog').show()" 
@@ -166,6 +145,25 @@ and open the template in the editor.
 
 
             </h:form>
+            <p:divider align="left">
+                <div class="inline-flex align-items-center">
+                    <i class="pi pi-palette" id="divider-icon"/>
+                    <b>Mi tema preferido</b>
+                </div>
+            </p:divider>
+            <div class="theme-selector-container" style="margin-bottom:1rem;">
+                <h:form id="themeForm">
+                    <p:selectOneMenu id="themeSelect"
+                                     value="#{userBackingBean.tema}">
+                        <f:selectItem itemLabel="Claro"  itemValue="light"/>
+                        <f:selectItem itemLabel="Oscuro" itemValue="dark"/>
+                        <f:selectItem itemLabel="Verde"  itemValue="green"/>
+                        <f:selectItem itemLabel="Rosa"   itemValue="pink"/>
+                        
+                        <p:ajax listener="#{userClientBean.guardarTema}" update="@all" global="true"/>
+                    </p:selectOneMenu>
+                </h:form>
+            </div>
         </div>
     </h:body>
 </html>

@@ -7,19 +7,19 @@ package com.aalvarotex.sd.sdchatv2.dto;
 
 /**
  *
- * @author alvar
- * Esta clase se usa para juntar datos de las tablas de usuario y detalles_usaurio
- * en un solo objeto
+ * @author alvar Esta clase se usa para juntar datos de las tablas de usuario y
+ * detalles_usaurio en un solo objeto
  */
 public class UsuarioDTO {
-    
+
     private Long idUsuario;
     private String nombreUsuario;
-    
+
     private String fotoPerfil;
     private String colorPref;
-    
-    public UsuarioDTO(){}
+
+    public UsuarioDTO() {
+    }
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -52,6 +52,5 @@ public class UsuarioDTO {
     public void setColorPref(String colorPref) {
         this.colorPref = colorPref;
     }
-    
-    
+
 }

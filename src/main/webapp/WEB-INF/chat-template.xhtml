@@ -12,7 +12,7 @@
         <script src="#{resource['js/jquery-1.10.2.min.js']}"></script>
         <link rel="stylesheet" href="#{resource['css/chat.css']}"></link>
         <title>sdChat - Mis conversaciones</title>
-<meta name="viewport" content="width=device-width, min-height: 97vh" />
+        <meta name="viewport" content="width=device-width, min-height: 97vh" />
         <h:outputScript target="head">
             //<![CDATA[
             (function () {
@@ -27,6 +27,9 @@
             })();
             //]]>
         </h:outputScript>
+        <h:outputStylesheet library="css" name="themes/dark.css" rendered="#{loginBackingBean.temaUsuario == 'dark'}"/>
+        <h:outputStylesheet library="css" name="themes/green.css" rendered="#{loginBackingBean.temaUsuario == 'green'}"/>
+        <h:outputStylesheet library="css" name="themes/pink.css" rendered="#{loginBackingBean.temaUsuario == 'pink'}"/>
     </h:head>
 
 
@@ -37,7 +40,7 @@
         </div>
         <div id="content" class="left_content">
             <ui:insert name="content">Content
-            
+
             </ui:insert>
         </div>
 

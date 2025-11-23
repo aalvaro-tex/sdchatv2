@@ -23,26 +23,32 @@ import javax.inject.Named;
 @Named
 @ManagedBean
 @SessionScoped
-public class StringUtils  implements Serializable {
-    private static final DateTimeFormatter IN_FMT =
-            DateTimeFormatter.ofPattern("dd-MM-uuuu HH:mm:ss")
-                             .withResolverStyle(ResolverStyle.STRICT);
+public class StringUtils implements Serializable {
 
-    private static final DateTimeFormatter OUT_TIME =
-            DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter IN_FMT
+            = DateTimeFormatter.ofPattern("dd-MM-uuuu HH:mm:ss")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+    private static final DateTimeFormatter OUT_TIME
+            = DateTimeFormatter.ofPattern("HH:mm");
+
     /**
-     * @param textoFecha fecha/hora en formato "dd-MM-yyyy HH:mm:ss" (hora local)
-     * @return si es hoy -> "HH:mm"; si es de un día anterior -> número de días transcurridos.
-     *         (Si la fecha es futura, devuelve "0" días.)
+     * @param textoFecha fecha/hora en formato "dd-MM-yyyy HH:mm:ss" (hora
+     * local)
+     * @return si es hoy -> "HH:mm"; si es de un día anterior -> número de días
+     * transcurridos. (Si la fecha es futura, devuelve "0" días.)
      */
     public static String horaOHaceDias(String textoFecha) {
         return horaOHaceDias(textoFecha, ZoneId.systemDefault());
     }
 
-    /** Variante con zona explícita (por ejemplo ZoneId.of("Europe/Madrid"))
+    /**
+     * Variante con zona explícita (por ejemplo ZoneId.of("Europe/Madrid"))
+     *
      * @param textoFecha
      * @param zone
-     * @return  */
+     * @return
+     */
     public static String horaOHaceDias(String textoFecha, ZoneId zone) {
         LocalDateTime ldt = LocalDateTime.parse(textoFecha, IN_FMT);
         LocalDate fecha = ldt.toLocalDate();

@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 html, body{
     height: 97vh;
-    
+
     background-image: url("./../img/fondo_atex_pc_verde.png");
     background-size: cover;
     background-repeat: no-repeat;

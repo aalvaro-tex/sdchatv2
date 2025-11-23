@@ -23,9 +23,19 @@ public class LoginBackingBean implements Serializable {
     Usuario usuarioLogeado;
     String nombreUsuario;
     String password;
-    
+
     String nuevoNombreUsuario;
     String nuevoPassword;
+    
+    String temaUsuario;
+
+    public String getTemaUsuario() {
+        return temaUsuario;
+    }
+
+    public void setTemaUsuario(String temaUsuario) {
+        this.temaUsuario = temaUsuario;
+    }
 
     public String getNuevoNombreUsuario() {
         return nuevoNombreUsuario;
@@ -67,7 +77,6 @@ public class LoginBackingBean implements Serializable {
         this.password = password;
     }
 
-    
     /**
      *
      * @param mensaje

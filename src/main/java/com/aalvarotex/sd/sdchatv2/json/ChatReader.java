@@ -74,7 +74,7 @@ public class ChatReader implements MessageBodyReader<Chat> {
                             chat.setIdEmisor(parser.getLong());
                             break;
                         case "idReceptor":
-                           chat.setIdReceptor(parser.getLong());
+                            chat.setIdReceptor(parser.getLong());
                             break;
                         case "mensaje":
                             chat.setMensaje(parser.getString());

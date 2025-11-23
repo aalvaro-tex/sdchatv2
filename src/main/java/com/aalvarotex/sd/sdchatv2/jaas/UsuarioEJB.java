@@ -5,7 +5,6 @@
  */
 package com.aalvarotex.sd.sdchatv2.jaas;
 
-
 import com.aalvarotex.sd.sdchatv2.entities.Usuario;
 import com.aalvarotex.sd.sdchatv2.entities.UsuarioGrupo;
 import com.aalvarotex.sd.sdchatv2.utils.AutenticacionUtils;
@@ -31,10 +30,11 @@ public class UsuarioEJB {
      * @return
      * @throws Exception
      */
-    public void createUser(Usuario user) throws Exception  {
+    public void createUser(Usuario user) throws Exception {
         Long idUsuarioCreado = -1L;
         try {
-            user.setPassword(AutenticacionUtils.encodeSHA256(user.getPassword()));
+            String hashAlmacenado = AutenticacionUtils.hashPassword(user.getPassword());
+            user.setPassword(hashAlmacenado);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,15 +42,12 @@ public class UsuarioEJB {
         group.setNombreUsuario(user.getNombreUsuario());
         group.setNombreRol("usuario");
         try {
-            if(em.createNamedQuery("Usuario.findByNombreUsuario", Usuario.class)
+            if (em.createNamedQuery("Usuario.findByNombreUsuario", Usuario.class)
                     .setParameter("nombreUsuario", user.getNombreUsuario())
-                    .getResultList().size() < 1)
-            {
-            em.persist(user);
-            System.out.println(user.getNombreUsuario());
-            // necesitamos el id del usuario creado para añadirlo al cliente/refugio
-            }
-            else{
+                    .getResultList().size() < 1) {
+                em.persist(user);
+                System.out.println(user.getNombreUsuario());
+            } else {
                 throw new Exception();
             }
         } catch (ConstraintViolationException e) {
@@ -75,12 +72,12 @@ public class UsuarioEJB {
                 Usuario.class);
         query.setParameter("nombreUsuario", nombreUsuario);
         Usuario user = null;
-        try{
-        user = query.getSingleResult();
-        } catch(Exception e){
+        try {
+            user = query.getSingleResult();
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Exception();
-            
+
         }
         return user;
     }

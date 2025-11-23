@@ -25,7 +25,7 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class ChatWriter implements MessageBodyWriter<Chat>{
+public class ChatWriter implements MessageBodyWriter<Chat> {
 
     /**
      *
@@ -52,7 +52,7 @@ public class ChatWriter implements MessageBodyWriter<Chat>{
     @Override
     public long getSize(Chat t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return -1;
-                }
+    }
 
     /**
      *

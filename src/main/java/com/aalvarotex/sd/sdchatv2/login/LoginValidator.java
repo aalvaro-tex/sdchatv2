@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Named
 @RequestScoped
 public class LoginValidator {
-    
+
     @Size(min = 8)
     private String nombreUsuario;
 
@@ -27,6 +27,5 @@ public class LoginValidator {
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
-    
-    
+
 }

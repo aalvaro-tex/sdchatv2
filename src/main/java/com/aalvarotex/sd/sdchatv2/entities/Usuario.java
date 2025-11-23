@@ -60,8 +60,8 @@ public class Usuario implements Serializable {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
     }
-    
-    public Usuario(String nombreUsuario, String password){
+
+    public Usuario(String nombreUsuario, String password) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
@@ -89,8 +89,6 @@ public class Usuario implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -98,7 +96,6 @@ public class Usuario implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
 
     @Override
     public boolean equals(Object object) {
@@ -117,5 +114,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.aalvarotex.sd.sdchatv2.entities.Usuario[ id=" + id + " ]";
     }
-    
+
 }

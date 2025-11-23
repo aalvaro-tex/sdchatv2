@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UsuarioDetalles.findAll", query = "SELECT u FROM UsuarioDetalles u"),
     @NamedQuery(name = "UsuarioDetalles.findByIdUsuario", query = "SELECT u FROM UsuarioDetalles u WHERE u.idUsuario = :idUsuario"),
     @NamedQuery(name = "UsuarioDetalles.findByFotoPerfil", query = "SELECT u FROM UsuarioDetalles u WHERE u.fotoPerfil = :fotoPerfil"),
-    @NamedQuery(name = "UsuarioDetalles.findByColorPreferente", query = "SELECT u FROM UsuarioDetalles u WHERE u.colorPreferente = :colorPreferente")})
+    @NamedQuery(name = "UsuarioDetalles.findByTema", query = "SELECT u FROM UsuarioDetalles u WHERE u.tema = :tema")})
 public class UsuarioDetalles implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,10 +37,10 @@ public class UsuarioDetalles implements Serializable {
     @NotNull
     @Column(name = "id_usuario")
     private Long idUsuario;
-    @Column(name = "foto_perfil", length=10485760)
+    @Column(name = "foto_perfil", length = 10485760)
     private String fotoPerfil;
-    @Column(name = "color_preferente")
-    private String colorPreferente;
+    @Column(name = "tema")
+    private String tema;
 
     public UsuarioDetalles() {
     }
@@ -48,10 +48,9 @@ public class UsuarioDetalles implements Serializable {
     // por defecto, color y foto son NE (no especificado)
     public UsuarioDetalles(Long idUsuario) {
         this.idUsuario = idUsuario;
-        this.colorPreferente = "NE";
+        this.tema = "NE";
         this.fotoPerfil = "NE";
     }
-    
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -69,12 +68,12 @@ public class UsuarioDetalles implements Serializable {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public String getColorPreferente() {
-        return colorPreferente;
+    public String getTema() {
+        return tema;
     }
 
-    public void setColorPreferente(String colorPreferente) {
-        this.colorPreferente = colorPreferente;
+    public void setTema(String tema) {
+        this.tema = tema;
     }
 
     @Override
@@ -101,5 +100,5 @@ public class UsuarioDetalles implements Serializable {
     public String toString() {
         return "com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles[ idUsuario=" + idUsuario + " ]";
     }
-    
+
 }

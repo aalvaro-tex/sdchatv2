@@ -5,7 +5,6 @@
  */
 package com.aalvarotex.sd.sdchatv2.json;
 
-import com.aalvarotex.sd.sdchatv2.entities.Usuario;
 import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,8 +25,8 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class UsuarioDetallesWriter implements MessageBodyWriter<UsuarioDetalles>{
-    
+public class UsuarioDetallesWriter implements MessageBodyWriter<UsuarioDetalles> {
+
     /**
      *
      * @param type
@@ -38,10 +37,9 @@ public class UsuarioDetallesWriter implements MessageBodyWriter<UsuarioDetalles>
      */
     @Override
     public boolean isWriteable(Class<?> type, Type type1, Annotation[] antns, MediaType mt) {
-        return UsuarioDetalles
-                .class.isAssignableFrom(type);
+        return UsuarioDetalles.class.isAssignableFrom(type);
     }
-    
+
     /**
      *
      * @param t
@@ -52,10 +50,9 @@ public class UsuarioDetallesWriter implements MessageBodyWriter<UsuarioDetalles>
      * @return
      */
     @Override
-    public long getSize(UsuarioDetalles
-            t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public long getSize(UsuarioDetalles t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return -1;
-                }
+    }
 
     /**
      *
@@ -70,13 +67,12 @@ public class UsuarioDetallesWriter implements MessageBodyWriter<UsuarioDetalles>
      * @throws WebApplicationException
      */
     @Override
-    public void writeTo(UsuarioDetalles
-            t, Class<?> type, Type type1, Annotation[] antns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) throws IOException, WebApplicationException {
+    public void writeTo(UsuarioDetalles t, Class<?> type, Type type1, Annotation[] antns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) throws IOException, WebApplicationException {
         JsonGenerator gen = Json.createGenerator(out);
         gen.writeStartObject()
                 .write("idUsuario", t.getIdUsuario())
                 .write("fotoPerfil", t.getFotoPerfil())
-                .write("colorPreferente", t.getColorPreferente())
+                .write("tema", t.getTema())
                 .writeEnd();
         gen.flush();
     }

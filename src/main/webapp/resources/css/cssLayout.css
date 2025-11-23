@@ -18,7 +18,7 @@
     float: left;
     /*background-color: #ece3a5;*/
     width: 25vw;
-    height: 97vh;
+    height: 98vh;
     border-right: solid 1px #dee2e6;
 }
 
@@ -38,7 +38,7 @@
 .left_content {
     /*background-color: #dddddd;*/
     margin-left:25vw;
-        height: 97vh;
+    height: 98vh;
 }
 
 .right_content {
@@ -48,15 +48,15 @@
 }
 
 #top a:link, #top a:visited {
-  color: white;
-  font-weight : bold;
-  text-decoration: none;
+    color: white;
+    font-weight : bold;
+    text-decoration: none;
 }
 
 #top a:link:hover, #top a:visited:hover  {
-  color: black;
-  font-weight : bold;
-  text-decoration : underline;
+    color: black;
+    font-weight : bold;
+    text-decoration : underline;
 }
 
 

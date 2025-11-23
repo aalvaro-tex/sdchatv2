@@ -23,25 +23,33 @@ import org.primefaces.model.file.UploadedFile;
 @Named
 @SessionScoped
 public class UserBackingBean implements Serializable {
-    
+
     private UploadedFile fotoPerfil;
     private String nuevoNombre;
-    private String colorPreferente;
     private String fotoPerfilSrc;
-    
+    private String tema;
+
     private Long idUsuarioLogeado;
-    
+
     private UsuarioDetalles ud;
-    
+
     @Inject
     private ImageUtils imageUtils;
-    @Inject 
+    @Inject
     private UserClientBean userClientBean;
-    
+
     public void onPreRenderView() {
-            userClientBean.getUserDetails();
+        userClientBean.getUserDetails();
     }
 
+    public String getTema() {
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
+    
     public UploadedFile getFotoPerfil() {
         return fotoPerfil;
     }
@@ -54,23 +62,17 @@ public class UserBackingBean implements Serializable {
     public String getNuevoNombre() {
         return nuevoNombre;
     }
-    
+
     public void setNuevoNombre(String nuevoNombre) {
         this.nuevoNombre = nuevoNombre;
     }
 
-    public String getColorPreferente() {
-        return colorPreferente;
-    }
-
-    public void setColorPreferente(String colorPreferente) {
-        this.colorPreferente = colorPreferente;
-    }
-
     public String getFotoPerfilSrc() {
-        if(this.fotoPerfil != null){
+        if (this.fotoPerfil != null) {
             return this.imageUtils.upload(fotoPerfil);
-        } else return fotoPerfilSrc;
+        } else {
+            return fotoPerfilSrc;
+        }
     }
 
     public void setFotoPerfilSrc(String fotoPerfilSrc) {
@@ -92,12 +94,10 @@ public class UserBackingBean implements Serializable {
     public void setUd(UsuarioDetalles ud) {
         this.ud = ud;
     }
-    
+
     public void showInfo(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cambios guardados", mensaje);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    
-    
+
 }

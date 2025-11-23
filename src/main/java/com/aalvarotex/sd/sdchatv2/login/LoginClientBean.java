@@ -40,7 +40,7 @@ import javax.ws.rs.core.Response;
 public class LoginClientBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(LoginClientBean.class.getName());
-    
+
     Client client;
     WebTarget target;
 
@@ -70,14 +70,14 @@ public class LoginClientBean implements Serializable {
                 logger.log(Level.INFO, "Usuario creado: {0}", found.getNombreUsuario());
                 // añadimos a la tabla de detalles de usuario una línea con el id del usuario y el resto vacío
                 target = client
-                .target(base())
-                .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+                        .target(base())
+                        .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
                 UsuarioDetalles ud = new UsuarioDetalles(found.getId());
                 Response r = target.register(UsuarioDetallesWriter.class)
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.entity(ud, MediaType.APPLICATION_JSON));
+                        .request(MediaType.APPLICATION_JSON)
+                        .post(Entity.entity(ud, MediaType.APPLICATION_JSON));
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" +found.getId());
+                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" + found.getId());
             } catch (Exception e) {
                 bean.showError("Error al crear usuario");
                 e.printStackTrace();
@@ -99,10 +99,25 @@ public class LoginClientBean implements Serializable {
         }
         try {
             Usuario found = usuarioEJB.findByNombreUsuario(bean.getNombreUsuario());
+            // aqui recuperamos los detalles del usuario para establecer el tema
+            UsuarioDetalles ud = new UsuarioDetalles();
+            target = client
+                    .target(base())
+                    .path("com.aalvarotex.sd.sdchatv2.entities.usuariodetalles");
+            Response response = target.register(UsuarioDetallesWriter.class)
+                    .path("{id}")
+                    .resolveTemplate("id", found.getId())
+                    .request(MediaType.APPLICATION_JSON)
+                    .get();
+            if (response.getStatus() == 200) {
+                ud = response.readEntity(UsuarioDetalles.class);
+                bean.setTemaUsuario(ud.getTema());
+                System.out.println("El tema del usuario es: " + bean.getTemaUsuario());
+            }
             bean.setUsuarioLogeado(found);
             if (request.isUserInRole("usuario")) {
                 FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user="+found.getId());
+                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" + found.getId());
             }
         } catch (Exception e) {
             e.printStackTrace();

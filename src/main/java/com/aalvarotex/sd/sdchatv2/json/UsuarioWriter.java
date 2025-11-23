@@ -5,8 +5,7 @@
  */
 package com.aalvarotex.sd.sdchatv2.json;
 
-import com.aalvarotex.sd.sdchatv2.entities.Usuario
-        ;
+import com.aalvarotex.sd.sdchatv2.entities.Usuario;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -26,8 +25,7 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class UsuarioWriter implements MessageBodyWriter<Usuario
-        >{
+public class UsuarioWriter implements MessageBodyWriter<Usuario> {
 
     /**
      *
@@ -39,8 +37,7 @@ public class UsuarioWriter implements MessageBodyWriter<Usuario
      */
     @Override
     public boolean isWriteable(Class<?> type, Type type1, Annotation[] antns, MediaType mt) {
-        return Usuario
-                .class.isAssignableFrom(type);
+        return Usuario.class.isAssignableFrom(type);
     }
 
     /**
@@ -53,10 +50,9 @@ public class UsuarioWriter implements MessageBodyWriter<Usuario
      * @return
      */
     @Override
-    public long getSize(Usuario
-            t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public long getSize(Usuario t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return -1;
-                }
+    }
 
     /**
      *
@@ -71,8 +67,7 @@ public class UsuarioWriter implements MessageBodyWriter<Usuario
      * @throws WebApplicationException
      */
     @Override
-    public void writeTo(Usuario
-            t, Class<?> type, Type type1, Annotation[] antns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) throws IOException, WebApplicationException {
+    public void writeTo(Usuario t, Class<?> type, Type type1, Annotation[] antns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) throws IOException, WebApplicationException {
         JsonGenerator gen = Json.createGenerator(out);
         gen.writeStartObject()
                 .write("id", t.getId())

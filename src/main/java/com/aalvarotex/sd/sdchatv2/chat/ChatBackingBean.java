@@ -23,14 +23,13 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class ChatBackingBean implements Serializable {
-    
+
     private static final Logger logger = Logger.getLogger(ChatBackingBean.class.getName());
-    
+
     private String newChatUsername;
     private String idConversacionSelected;
-    
+
     private Long idUserLogeado;
- 
 
     public String getNewChatUsername() {
         return newChatUsername;
@@ -57,18 +56,14 @@ public class ChatBackingBean implements Serializable {
         this.idUserLogeado = idUserLogeado;
     }
 
-    
-    
-    public void setIdConversacionSelectedRefresh(String idConversacionSelected) throws IOException{
-            this.setIdConversacionSelected(idConversacionSelected);
-                FacesContext.getCurrentInstance().getExternalContext()
+    public void setIdConversacionSelectedRefresh(String idConversacionSelected) throws IOException {
+        this.setIdConversacionSelected(idConversacionSelected);
+        FacesContext.getCurrentInstance().getExternalContext()
                 .redirect("chat.xhtml?idConversacion=" + this.idConversacionSelected + "&user=" + this.idUserLogeado);
-                System.out.println("Id de la conversación seleccionada: " + this.idConversacionSelected);
+        System.out.println("Id de la conversación seleccionada: " + this.idConversacionSelected);
     }
-    
-    
-    
-        /**
+
+    /**
      *
      * @param mensaje
      */
@@ -76,7 +71,5 @@ public class ChatBackingBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", mensaje);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    
-    
+
 }

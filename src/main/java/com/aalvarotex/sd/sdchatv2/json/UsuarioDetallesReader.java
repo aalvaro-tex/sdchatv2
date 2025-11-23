@@ -22,9 +22,9 @@ import javax.ws.rs.ext.MessageBodyReader;
  *
  * @author alvar
  */
-public class UsuarioDetallesReader implements MessageBodyReader<UsuarioDetalles>{
-    
-       /**
+public class UsuarioDetallesReader implements MessageBodyReader<UsuarioDetalles> {
+
+    /**
      *
      * @param type
      * @param type1
@@ -36,7 +36,7 @@ public class UsuarioDetallesReader implements MessageBodyReader<UsuarioDetalles>
     public boolean isReadable(Class<?> type, Type type1, Annotation[] antns, MediaType mt) {
         return UsuarioDetalles.class.isAssignableFrom(type);
     }
-    
+
     /**
      *
      * @param type
@@ -72,8 +72,8 @@ public class UsuarioDetallesReader implements MessageBodyReader<UsuarioDetalles>
                         case "fotoPerfil":
                             usuarioDetalles.setFotoPerfil(parser.getString());
                             break;
-                        case "colorPreferente":
-                            usuarioDetalles.setColorPreferente(parser.getString());
+                        case "tema":
+                            usuarioDetalles.setTema(parser.getString());
                             break;
                         default:
                             break;

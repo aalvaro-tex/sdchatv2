@@ -46,7 +46,6 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     public void create(Chat entity) {
         super.create(entity);
     }
-    
 
     @PUT
     @Path("{id}")
@@ -60,13 +59,13 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
-    
+
     @DELETE
     @Path("delete-chat/{id}")
-    public void deleteChatById(@PathParam("id") String id){
+    public void deleteChatById(@PathParam("id") String id) {
         List<Chat> all = this.findAll();
-        for(Chat c : all){
-            if(c.getIdConversacion().equalsIgnoreCase(id)){
+        for (Chat c : all) {
+            if (c.getIdConversacion().equalsIgnoreCase(id)) {
                 this.remove(c);
             }
         }
@@ -99,27 +98,26 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     /* Método propio */
     // Busca si una posible conversación ya existe o no
     @GET
     @Path("exists/{idConversacion}")
-    public boolean existeConversacion(@PathParam("idConversacion") String idConversacion){
+    public boolean existeConversacion(@PathParam("idConversacion") String idConversacion) {
         boolean existe = false;
         List<Chat> all = this.findAll();
-        if(!all.isEmpty()){
-        for(Chat c : all){
-            if(c.getIdConversacion().equalsIgnoreCase(idConversacion)){
-                existe = true;
-                System.out.println("Existe la conversación " + idConversacion);
+        if (!all.isEmpty()) {
+            for (Chat c : all) {
+                if (c.getIdConversacion().equalsIgnoreCase(idConversacion)) {
+                    existe = true;
+                    System.out.println("Existe la conversación " + idConversacion);
+                }
             }
-        }
         }
         return existe;
     }
 
     // Busca todos los chats en los que participa un usuario
-
     /**
      *
      * @param idUsuario
@@ -130,35 +128,36 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Chat> getChatsByUser(@PathParam("idUsuario") Long idUsuario) {
         try {
-        // Trae los chats (ideal: que la named query ya los ordene por fecha DESC o ASC según necesites)
-        List<Chat> chats = em.createNamedQuery("Chat.findChatsByUser", Chat.class)
-                .setParameter("idUsuario", idUsuario)
-                .getResultList();
+            // Trae los chats (ideal: que la named query ya los ordene por fecha DESC o ASC según necesites)
+            List<Chat> chats = em.createNamedQuery("Chat.findChatsByUser", Chat.class)
+                    .setParameter("idUsuario", idUsuario)
+                    .getResultList();
 
-        if (chats.isEmpty()) return Collections.emptyList();
-
-        // Deduplicar por idConversacion sin modificar la lista mientras se itera
-            HashSet<Object> seen = new HashSet<Object>();
-        List<Chat> unique = new ArrayList<>();
-
-        for (Chat c : chats) {
-            String idConv = c.getIdConversacion();
-            // normaliza para case-insensitive y evita NPE
-            String key = (idConv == null) ? null : idConv.toLowerCase(Locale.ROOT);
-            if (seen.add(key)) { // add devuelve true la primera vez que aparece
-                unique.add(c);
+            if (chats.isEmpty()) {
+                return Collections.emptyList();
             }
-        }
-        return unique;
-    } catch (Exception e) {
-        // Loguea y devuelve lista vacía (o relanza según tu política)
-        e.printStackTrace();
-        return Collections.emptyList();
-    }
-    }
-    
-    // Busca los 4 últimos mensajes enviados en una conversación concreta
 
+            // Deduplicar por idConversacion sin modificar la lista mientras se itera
+            HashSet<Object> seen = new HashSet<Object>();
+            List<Chat> unique = new ArrayList<>();
+
+            for (Chat c : chats) {
+                String idConv = c.getIdConversacion();
+                // normaliza para case-insensitive y evita NPE
+                String key = (idConv == null) ? null : idConv.toLowerCase(Locale.ROOT);
+                if (seen.add(key)) { // add devuelve true la primera vez que aparece
+                    unique.add(c);
+                }
+            }
+            return unique;
+        } catch (Exception e) {
+            // Loguea y devuelve lista vacía (o relanza según tu política)
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // Busca los 4 últimos mensajes enviados en una conversación concreta
     /**
      *
      * @param idConversacion
@@ -184,5 +183,5 @@ public class ChatFacadeREST extends AbstractFacade<Chat> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

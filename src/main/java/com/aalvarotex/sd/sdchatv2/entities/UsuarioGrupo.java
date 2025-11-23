@@ -121,6 +121,4 @@ public class UsuarioGrupo implements Serializable {
         return "[ idUsuario=" + nombreUsuario + " ]";
     }
 
-
-    
 }
