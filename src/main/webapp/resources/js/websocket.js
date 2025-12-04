@@ -56,9 +56,8 @@
             }
         }
 
-        // API pública
         window.send_message = function () {
-            const campoTexto = document.getElementById('campoTexto');
+            const campoTexto = document.getElementById('inputForm:campoTexto');
             if (!campoTexto)
                 return;
             const mensaje = `${idEmisor}@${idConversacion}_${campoTexto.value}`;

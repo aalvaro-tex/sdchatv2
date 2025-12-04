@@ -180,11 +180,11 @@
                                         </p:commandButton>
                                         <!-- TODO: quitar comentario cuando funcione <p:tooltip for="mediaBtn" value="Seleccionar archivo" /> -->
                                     </h:form>
-                                    <h:form style="width:100%">
+                                    <h:form style="width:100%" id="inputForm">
                                         <p:outputLabel value="Mensaje" for="campoTexto" style="display: none" />
                                         <p:inputText id="campoTexto" style="width:100%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
                                     </h:form>
-                                    <h:form>
+                                    <h:form id="sendForm">
                                         <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages" global="false">
 
                                         </p:commandButton>
