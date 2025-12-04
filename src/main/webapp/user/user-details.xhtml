@@ -109,13 +109,10 @@ and open the template in the editor.
                         <i class="pi pi-spin pi-spinner" style="font-size:2rem;"></i>
                     </div>
                 </p:dialog>
-                <!-- Contenedor avatar + botón -->
+  
                 <div class="avatar-wrap">
-                    <!-- Imagen circular -->
                     <div class="avatar-circle">
-                        <!-- Si tienes bytes en el bean -->
                         <img id="avatarImg" src="data:image/png;base64,#{userBackingBean.fotoPerfilSrc}"/>
-                        <!-- Fallback si no hay imagen -->
                         <h:panelGroup rendered="#{empty userBackingBean.fotoPerfilSrc}">
                             <span style="color:#dbe5ea; font-weight:700; font-size:2rem;">
                                 NE
@@ -123,7 +120,7 @@ and open the template in the editor.
                         </h:panelGroup>
                     </div>
 
-                    <!-- Botón circular pequeño (abre el diálogo de subir imagen) -->
+                   
                     <p:commandButton type="button" icon="pi pi-pencil"
                                      onclick="PF('uploadDlg').show()"
                                      styleClass="rounded-button ui-button-info edit-fab" id="editPicBtn"/>
@@ -134,7 +131,7 @@ and open the template in the editor.
                 </div>
 
 
-                <!-- Diálogo con fileUpload -->
+                
                 <p:dialog widgetVar="uploadDlg" header="Cambiar imagen de perfil" modal="true"
                           resizable="false" draggable="false">
                     <div class="btn-container">
