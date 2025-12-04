@@ -62,6 +62,7 @@ public class ChatClientBean {
 
         String success = "failure";
         String username = bean.getNewChatUsername();
+
         target = client
                 .target(base())
                 .path("com.aalvarotex.sd.sdchatv2.entities.usuario");
@@ -78,25 +79,11 @@ public class ChatClientBean {
                 // primero debemos comprobar si ya tenemos una conversación iniciada
                 // para ello buscamos si el posible id de la conversación (o su opuesto) ya existe
                 Usuario u = r.readEntity(Usuario.class);
-                String idConversacion = bean.getIdUserLogeado() + "-" + u.getId();
-                System.out.println("id de la conversación: " + idConversacion);
-                target = client
-                        .target(base())
-                        .path("com.aalvarotex.sd.sdchatv2.entities.chat");
-                r = target.register(ChatReader.class)
-                        .path("exists/{idConversacion}")
-                        .resolveTemplate("idConversacion", idConversacion)
-                        .request()
-                        .get();
-
-                if (r.readEntity(Boolean.class) == true) {
-                    boolean existe = true;
-                    bean.setIdConversacionSelectedRefresh(idConversacion);
-                    // aquí la conversación existe
-                    success = "success";
+                if (Objects.equals(u.getId(), bean.getIdUserLogeado())) {
+                    bean.showError("¡No puedes hablar contigo mismo!");
                 } else {
-                    // aquí debemos probar con el id opuesto
-                    idConversacion = u.getId() + "-" + bean.getIdUserLogeado();
+                    String idConversacion = bean.getIdUserLogeado() + "-" + u.getId();
+                    System.out.println("id de la conversación: " + idConversacion);
                     target = client
                             .target(base())
                             .path("com.aalvarotex.sd.sdchatv2.entities.chat");
@@ -106,16 +93,34 @@ public class ChatClientBean {
                             .request()
                             .get();
 
-                    if (r.readEntity(Boolean.class)) {
+                    if (r.readEntity(Boolean.class) == true) {
                         boolean existe = true;
-                        // aquí la conversación existe
                         bean.setIdConversacionSelectedRefresh(idConversacion);
+                        // aquí la conversación existe
                         success = "success";
                     } else {
-                        // aquí no existe la conversación
-                        System.out.println("La conversación no existe");
-                        bean.setIdConversacionSelectedRefresh(idConversacion);
-                        success = "success";
+                        // aquí debemos probar con el id opuesto
+                        idConversacion = u.getId() + "-" + bean.getIdUserLogeado();
+                        target = client
+                                .target(base())
+                                .path("com.aalvarotex.sd.sdchatv2.entities.chat");
+                        r = target.register(ChatReader.class)
+                                .path("exists/{idConversacion}")
+                                .resolveTemplate("idConversacion", idConversacion)
+                                .request()
+                                .get();
+
+                        if (r.readEntity(Boolean.class)) {
+                            boolean existe = true;
+                            // aquí la conversación existe
+                            bean.setIdConversacionSelectedRefresh(idConversacion);
+                            success = "success";
+                        } else {
+                            // aquí no existe la conversación
+                            System.out.println("La conversación no existe");
+                            bean.setIdConversacionSelectedRefresh(idConversacion);
+                            success = "success";
+                        }
                     }
                 }
             } else {
@@ -291,7 +296,7 @@ public class ChatClientBean {
         logger.info("Conversaciones borradas");
         bean.setIdConversacionSelected("0-0");
         FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" + bean.getIdUserLogeado());
+                .redirect("/sdchat/web/chat/chat.xhtml?idConversacion=0-0&user=" + bean.getIdUserLogeado());
     }
 
     private String base() {

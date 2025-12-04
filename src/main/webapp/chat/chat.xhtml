@@ -109,16 +109,16 @@
                                 <p:outputLabel value="Nombre de usuario" for="usernameInputChat" id="output-label-username" style="display: none" />
                                 <p:inputText id="usernameInputChat" style="width:95%" placeholder="Nombre de usuario" value="#{chatBackingBean.newChatUsername}" required="true"/>
 
-                                <p:commandButton icon="pi pi-check" id="startConversacionBtn" actionListener="#{chatClientBean.startConversacion()}" oncomplete="handleSubmitAdd(xhr, status, args)">
+                                <p:commandButton update="growlNewChat" icon="pi pi-check" id="startConversacionBtn" actionListener="#{chatClientBean.startConversacion()}" oncomplete="handleSubmitAdd(xhr, status, args)">
                                 </p:commandButton>
                                 <p:tooltip for="startConversacionBtn" value="Iniciar conversación" />
                             </div>
                         </div>
                     </h:form>
                 </p:dialog>
-                <!-- si se descomenta, hay que añadir update="growlNewChat" al commandButton anterior
+
                 <p:growl id="growlNewChat" showDetail="true"></p:growl>
-                -->
+
             </ui:define>
 
             <ui:define name="content" id="chat-content" >    
@@ -167,7 +167,9 @@
                                     </div>
                                 </p:column>
                             </p:dataTable>
-                            <p:remoteCommand name="rcActualizarTabla" update="chatMessages" />
+                            <h:form>
+                                <p:remoteCommand name="rcActualizarTabla" update="chatMessages" />
+                            </h:form>
                         </div>
                         <div class="message-input">
 
@@ -178,9 +180,10 @@
                                         </p:commandButton>
                                         <!-- TODO: quitar comentario cuando funcione <p:tooltip for="mediaBtn" value="Seleccionar archivo" /> -->
                                     </h:form>
-
-                                    <p:outputLabel value="Mensaje" for="campoTexto" style="display: none" />
-                                    <p:inputText id="campoTexto" style="width:95%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
+                                    <h:form style="width:100%">
+                                        <p:outputLabel value="Mensaje" for="campoTexto" style="display: none" />
+                                        <p:inputText id="campoTexto" style="width:100%;" placeholder="Escribe un mensaje" value="#{loginBackingBean.nombreUsuario}" required="true"/>
+                                    </h:form>
                                     <h:form>
                                         <p:commandButton id="sendBtn" icon="pi pi-send" style="margin-right:10px;" onclick="send_message();" update="chatMessages" global="false">
 

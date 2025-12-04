@@ -33,7 +33,7 @@ public class UsuarioEJB {
     public void createUser(Usuario user) throws Exception {
         Long idUsuarioCreado = -1L;
         try {
-            String hashAlmacenado = AutenticacionUtils.hashPassword(user.getPassword());
+            String hashAlmacenado = AutenticacionUtils.encodeSHA256(user.getPassword());
             user.setPassword(hashAlmacenado);
         } catch (Exception e) {
             e.printStackTrace();
