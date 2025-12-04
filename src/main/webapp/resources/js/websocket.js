@@ -11,7 +11,6 @@
         let idConversacion = url.searchParams.get('idConversacion');
         let idEmisor = url.searchParams.get('user');
 
-        // Preferible inyectar esto desde el servidor (JSF)
         const contextPath = (window.appConfig && window.appConfig.contextPath)
                 || ('/' + (location.pathname.split('/')[1] || ''));
 
@@ -29,19 +28,14 @@
         const wsUri = `${wsProto}//${location.host}${contextPath}/websocket/${encodeURIComponent(idConversacion)}`;
         console.log('[WS] Conectando a', wsUri);
 
-        // (Opcional) “precalienta” la sesión si tu endpoint requiere cookie
-        // fetch(`${contextPath}/health`, { credentials: 'include' }).catch(()=>{});
-
-        // Evita abrir dos veces
         if (window.wsocket && (window.wsocket.readyState === 0 || window.wsocket.readyState === 1)) {
             console.log('[WS] Ya hay un socket en curso/abierto');
             return;
         }
 
         let wsocket = new WebSocket(wsUri);
-        window.wsocket = wsocket; // explícito
+        window.wsocket = wsocket; 
 
-        // DOM: comprueba nulos antes de tocar estilos
         const chatContent = document.getElementById('content');
         const chatList = document.getElementById('left');
         if (chatContent && chatList && window.innerWidth <= 768) {
@@ -90,8 +84,6 @@
         });
         wsocket.addEventListener('error', evt => {
             console.error('[WS] ERROR', evt);
-            // (Opcional) retry con backoff si lo necesitas
-            // setTimeout(init, 1000);
         });
     }
 })();

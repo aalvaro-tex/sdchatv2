@@ -1,37 +1,31 @@
-/* ============================
-        TEMA VERDE (green.css)
-   ============================ */
-
-/* Variables principales */
 :root {
-    /* Fondo general suave */
+
     --color-bg: #eef6f0;
     --color-surface: #ffffff;
     --color-surface-alt: #f4faf5;
     --color-border: #cfe3d4;
 
-    /* Texto */
+
     --color-text: #1e2d23;
     --color-text-muted: #6b7f72;
 
-    /* Verdes principales */
-    --color-primary: #43a047;            /* verde principal */
-    --color-primary-hover: #388e3c;
-    --color-secondary: #66bb6a;          /* verde secundario */
 
-    /* Rojo para botones de peligro */
+    --color-primary: #43a047;            
+    --color-primary-hover: #388e3c;
+    --color-secondary: #66bb6a;          
+
     --color-danger: #e53935;
 
     --shadow-elevated: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Fondo general */
+
 body {
     background-color: var(--color-bg) !important;
     color: var(--color-text) !important;
 }
 
-/* Contenedores */
+
 .chat-container,
 .chat-list-container,
 .user-settings-container,
@@ -50,7 +44,6 @@ body {
     }
 }
 
-/* Títulos */
 #divider-icon,
 .chat-list-title b,
 .user-settings-title b,
@@ -58,7 +51,7 @@ p, label, span {
     color: var(--color-text) !important;
 }
 
-/* Botones */
+
 .ui-button-primary {
     background-color: var(--color-primary) !important;
     border-color: var(--color-primary) !important;
@@ -86,7 +79,6 @@ p, label, span {
     color: #fff !important;
 }
 
-/* Inputs */
 .ui-inputfield,
 input,
 textarea {
@@ -99,13 +91,13 @@ textarea {
     color: var(--color-text-muted) !important;
 }
 
-/* Lista de conversaciones */
+
 .chat-list-item {
     background-color: var(--color-surface-alt) !important;
     border-color: var(--color-border) !important;
 }
 
-/* Tablas y mensajes */
+
 .ui-datatable,
 .ui-datascroller-content,
 .message-container-emisor,
@@ -114,7 +106,7 @@ textarea {
     color: var(--color-text);
 }
 
-/* Diálogos */
+
 .ui-dialog {
     background: var(--color-surface) !important;
     border-color: var(--color-border) !important;

@@ -1,37 +1,32 @@
-/* ============================
-        TEMA ROSA (pink.css)
-   ============================ */
-
-/* Variables principales */
 :root {
-    /* Fondo general suave */
+    
     --color-bg: #fef1f7;
     --color-surface: #ffffff;
     --color-surface-alt: #fde6f0;
     --color-border: #f6bfd8;
 
-    /* Texto */
+    
     --color-text: #2b1723;
     --color-text-muted: #8c5a72;
 
-    /* Rosas principales */
-    --color-primary: #ec407a;            /* rosa principal */
-    --color-primary-hover: #d81b60;      /* rosa más intenso al hover */
-    --color-secondary: #f06292;          /* rosa secundario */
+    
+    --color-primary: #ec407a;            
+    --color-primary-hover: #d81b60;      
+    --color-secondary: #f06292;          
 
-    /* Rojo para botones de peligro */
+    
     --color-danger: #e53935;
 
     --shadow-elevated: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Fondo general */
+
 body {
     background-color: var(--color-bg) !important;
     color: var(--color-text) !important;
 }
 
-/* Contenedores */
+
 .chat-container,
 .chat-list-container,
 .user-settings-container,
@@ -50,7 +45,7 @@ body {
     }
 }
 
-/* Títulos */
+
 #divider-icon,
 .chat-list-title b,
 .user-settings-title b,
@@ -58,7 +53,7 @@ p, label, span {
     color: var(--color-text) !important;
 }
 
-/* Botones */
+
 .ui-button-primary {
     background-color: var(--color-primary) !important;
     border-color: var(--color-primary) !important;
@@ -85,7 +80,7 @@ p, label, span {
     color: #fff !important;
 }
 
-/* Inputs */
+
 .ui-inputfield,
 input,
 textarea {
@@ -98,13 +93,13 @@ textarea {
     color: var(--color-text-muted) !important;
 }
 
-/* Lista de conversaciones */
+
 .chat-list-item {
     background-color: var(--color-surface-alt) !important;
     border-color: var(--color-border) !important;
 }
 
-/* Tablas y mensajes */
+
 .ui-datatable,
 .ui-datascroller-content,
 .message-container-emisor,
@@ -113,7 +108,7 @@ textarea {
     color: var(--color-text);
 }
 
-/* Diálogos */
+
 .ui-dialog {
     background: var(--color-surface) !important;
     border-color: var(--color-border) !important;
