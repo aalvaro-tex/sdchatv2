@@ -10,8 +10,6 @@ import com.aalvarotex.sd.sdchatv2.entities.Usuario;
 import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import com.aalvarotex.sd.sdchatv2.jaas.UsuarioEJB;
 import com.aalvarotex.sd.sdchatv2.json.UsuarioDetallesWriter;
-import com.aalvarotex.sd.sdchatv2.json.UsuarioReader;
-import com.aalvarotex.sd.sdchatv2.json.UsuarioWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;

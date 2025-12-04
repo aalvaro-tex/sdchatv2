@@ -5,7 +5,6 @@
  */
 package com.aalvarotex.sd.sdchatv2.json;
 
-import com.aalvarotex.sd.sdchatv2.entities.Usuario;
 import com.aalvarotex.sd.sdchatv2.entities.UsuarioDetalles;
 import java.io.IOException;
 import java.io.InputStream;

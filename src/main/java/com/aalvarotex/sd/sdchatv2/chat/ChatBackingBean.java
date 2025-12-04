@@ -5,7 +5,6 @@
  */
 package com.aalvarotex.sd.sdchatv2.chat;
 
-import com.aalvarotex.sd.sdchatv2.login.LoginBackingBean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -13,7 +12,6 @@ import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
